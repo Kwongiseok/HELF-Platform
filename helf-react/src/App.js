@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import HomeScreen from './screens/HomeScreen';
 import LoginScreen from './screens/LoginScreen';
+import VideoScreen from './screens/VideoScreen';
 import Store from './Store/store';
 import { BrowserRouter, Route, Link } from "react-router-dom";
 
@@ -53,8 +54,9 @@ class App extends Component {
     return (
       <Store.Provider value={this.state}>
         <BrowserRouter>
-          <Route path exact = "/" onLogin = {this.onLogin} onLogout = {this.onLogout} component = {LoginScreen} />
-          <Route path  = "/home" component={HomeScreen}/>
+          <Route path exact="/" onLogin={this.onLogin} onLogout={this.onLogout} component={LoginScreen} />
+          <Route path="/home" component={HomeScreen} />
+          <Route path="/video" component={VideoScreen} />
         </BrowserRouter>
       </Store.Provider>
     );
