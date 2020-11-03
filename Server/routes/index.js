@@ -23,10 +23,12 @@ const router = express.Router();
 // router.use(express.static('../public'));
 
 // router.get('/',(req,res) => {
-//   res.send({greeting:'Hello'})
+//   console.log('http://localhost:5000/api/');
+//   res.json({data:'this is index.'})
 // })
 
 router.get('/video',(req,res) => {
+  console.log('video')
   res.redirect(`/api/${uuidV4()}`)
 })
 router.get('/:room', (req,res) => {

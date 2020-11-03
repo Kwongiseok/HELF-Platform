@@ -4,8 +4,9 @@ import HomeScreen from './screens/HomeScreen';
 import LoginScreen from './screens/LoginScreen';
 import VideoScreen from './screens/VideoScreen';
 import Store from './Store/store';
-import { BrowserRouter, Route, Link } from "react-router-dom";
-
+import { BrowserRouter, Route, Link , Switch } from "react-router-dom";
+import CreateRoom from "./routes/CreateRoom";
+import Room from "./routes/Room";
 import withLogin from './Components/LoginHOC'; // 로그인 했을 때만 보여짐
 // function App() {
 //   return (
@@ -22,6 +23,8 @@ class App extends Component {
       onLogout: this.onLogout,
     };
   }
+
+
   // Login Func
   onLogin = () => {
     this.setState({
@@ -47,6 +50,7 @@ class App extends Component {
     } else {
       this.onLogout();
     }
+
   }
   render() {
     const { logged, onLogout } = this.state;
@@ -54,8 +58,12 @@ class App extends Component {
     return (
       <Store.Provider value={this.state}>
         <BrowserRouter>
-          <Route exact path="/" onLogin={this.onLogin} onLogout={this.onLogout} component={LoginScreen} />
-          <Route path="/home" component={HomeScreen} />
+          <Switch>
+            <Route exact path="/" onLogin={this.onLogin} onLogout={this.onLogout} component={LoginScreen} />
+            <Route path="/video"  component={CreateRoom} />
+            <Route path="/room/:roomID" component={Room} />
+            <Route path="/home" component={HomeScreen} />
+          </Switch>
         </BrowserRouter>
       </Store.Provider>
     );
