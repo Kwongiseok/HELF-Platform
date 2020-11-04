@@ -3,8 +3,12 @@ import { GoogleLogin } from 'react-google-login';
 import styled from 'styled-components';
 import { Redirect, withRouter } from 'react-router-dom';
 
+import Header from "../Components/Header"
+
+
 const clientID =
   '170179425708-lu3v7mptq4jn95giek3kbv845eov647l.apps.googleusercontent.com';
+
 
 class LoginScreen extends Component {
   constructor(props) {
@@ -46,6 +50,7 @@ class LoginScreen extends Component {
   render() {
     return (
       <Container>
+        <Header/>
         <Login>
           <GoogleLogin
             clientId={clientID}
@@ -59,15 +64,23 @@ class LoginScreen extends Component {
     );
   }
 }
+
+// const Logo = styled.img`
+//   src : ${LogoImage};
+//   width: 100%;
+// `;
+
+
 const Login = styled.div`
   display: flex;
   position: absolute;
   top: 50%;
   left: 50%;
-  justifycontent: 'center';
-  alignitems: 'center';
+  justify-content: 'center';
+  align-items: 'center';
   transform: translate(-50%, -50%);
 `;
+
 const Container = styled.div`
   position: absolute;
   top: 0;
@@ -77,5 +90,7 @@ const Container = styled.div`
   background-color: #d9afd9;
   background-image: linear-gradient(0deg, #d9afd9 0%, #97d9e1 100%);
 `;
+
+
 
 export default withRouter(LoginScreen);

@@ -9,18 +9,24 @@ import * as posenet from "@tensorflow-models/posenet";
 import Webcam from "react-webcam";
 
 const Container = styled.div`
-    padding: 20px;
-    display: flex;
+    /* display: flex;
     height: 100vh;
     width: 90%;
     margin: auto;
-    flex-wrap: wrap;
+    flex-wrap: wrap; */
+    display:flex;
+    flex-wrap : wrap;
 `;
 
 const StyledVideo = styled.video`
     height: 50%;
     width: 50%;
 `;
+
+function ZoomVideo(peerID){
+    console.log(peerID);
+    alert("dd");
+}
 
 const Video = (props) => {
     const ref = useRef();
@@ -32,23 +38,9 @@ const Video = (props) => {
     }, []);
 
     return (
-        // <div>
-        <StyledVideo playsInline autoPlay ref={ref} onClick={(e) => {alert(e)}}/>
-        // <canvas style = {{
-        //     position: "absolute",
-        //     marginLeft: "auto",
-        //     marginRight: "auto",
-        //     left: 0,
-        //     right: 0,
-        //     textAlign: "center",
-        //     zindex: 9,
-        //     width: 640,
-        //     height: 480,
-        // }} />
-        // </div>
+        <StyledVideo playsInline autoPlay ref={ref} onClick = {(e) => {ZoomVideo(e)}}/>
     );
 }
-
 
 const videoConstraints = {
     height: window.innerHeight / 2,
@@ -64,7 +56,7 @@ const Room = (props) => {
     const roomID = props.match.params.roomID;
 
     useEffect(() => {
-        socketRef.current = io.connect("https://7c04f13ef7e3.ngrok.io");
+        socketRef.current = io.connect("https://helf-node.herokuapp.com");
         navigator.mediaDevices.getUserMedia({ video: videoConstraints, audio: true }).then(stream => {
             userVideo.current.srcObject = stream;
             socketRef.current.emit("join room", roomID);
@@ -128,17 +120,20 @@ const Room = (props) => {
 
         return peer;
     }
+    // console.log(peers.length)
+    console.log(peers);
 
     return (
         <Container>
-            <StyledVideo muted ref={userVideo} autoPlay playsInline onClick={(e) => {alert(e)}}/>
+            <StyledVideo id = "parent" muted ref={userVideo} autoPlay playsInline onClick = {(e) => {console.log(e)}} />
             {peers.map((peer, index) => {
                 return (
-                    <Video key={index} peer={peer} />
+                    <Video key={index} peer={peer}/>
                 );
             })}
         </Container>
     );
 };
+
 
 export default Room;

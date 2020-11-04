@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import './App.css';
+import './CSS/App.css';
 import HomeScreen from './screens/HomeScreen';
 import LoginScreen from './screens/LoginScreen';
 import VideoScreen from './screens/VideoScreen';
