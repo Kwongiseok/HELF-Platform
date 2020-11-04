@@ -3,6 +3,11 @@ import io from "socket.io-client";
 import Peer from "simple-peer";
 import styled from "styled-components";
 
+/* tensorflow */
+import * as tf from "@tensorflow/tfjs";
+import * as posenet from "@tensorflow-models/posenet";
+import Webcam from "react-webcam";
+
 const Container = styled.div`
     padding: 20px;
     display: flex;
@@ -27,7 +32,20 @@ const Video = (props) => {
     }, []);
 
     return (
-        <StyledVideo playsInline autoPlay ref={ref} />
+        // <div>
+        <StyledVideo playsInline autoPlay ref={ref} onClick={(e) => {alert(e)}}/>
+        // <canvas style = {{
+        //     position: "absolute",
+        //     marginLeft: "auto",
+        //     marginRight: "auto",
+        //     left: 0,
+        //     right: 0,
+        //     textAlign: "center",
+        //     zindex: 9,
+        //     width: 640,
+        //     height: 480,
+        // }} />
+        // </div>
     );
 }
 
@@ -37,6 +55,7 @@ const videoConstraints = {
     width: window.innerWidth / 2
 };
 
+
 const Room = (props) => {
     const [peers, setPeers] = useState([]);
     const socketRef = useRef();
@@ -45,7 +64,7 @@ const Room = (props) => {
     const roomID = props.match.params.roomID;
 
     useEffect(() => {
-        socketRef.current = io.connect("http://localhost:5000");
+        socketRef.current = io.connect("https://7c04f13ef7e3.ngrok.io");
         navigator.mediaDevices.getUserMedia({ video: videoConstraints, audio: true }).then(stream => {
             userVideo.current.srcObject = stream;
             socketRef.current.emit("join room", roomID);
@@ -112,7 +131,7 @@ const Room = (props) => {
 
     return (
         <Container>
-            <StyledVideo muted ref={userVideo} autoPlay playsInline />
+            <StyledVideo muted ref={userVideo} autoPlay playsInline onClick={(e) => {alert(e)}}/>
             {peers.map((peer, index) => {
                 return (
                     <Video key={index} peer={peer} />
