@@ -3,7 +3,8 @@ import { GoogleLogin } from 'react-google-login';
 import styled from 'styled-components';
 import { Redirect, withRouter } from 'react-router-dom';
 
-import LogoImage from '../images/helf-logo.JPG';
+import Header from "../Components/Header"
+
 
 const clientID =
   '170179425708-lu3v7mptq4jn95giek3kbv845eov647l.apps.googleusercontent.com';
@@ -49,8 +50,8 @@ class LoginScreen extends Component {
   render() {
     return (
       <Container>
+        <Header/>
         <Login>
-          <Logo/>
           <GoogleLogin
             clientId={clientID}
             buttonText='Google Login'
@@ -64,10 +65,10 @@ class LoginScreen extends Component {
   }
 }
 
-const Logo = styled.img`
-  src : ${LogoImage};
-  width: 100%;
-`;
+// const Logo = styled.img`
+//   src : ${LogoImage};
+//   width: 100%;
+// `;
 
 
 const Login = styled.div`

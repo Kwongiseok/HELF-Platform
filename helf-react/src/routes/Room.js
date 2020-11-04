@@ -4,18 +4,24 @@ import Peer from "simple-peer";
 import styled from "styled-components";
 
 const Container = styled.div`
-    padding: 20px;
-    display: flex;
+    /* display: flex;
     height: 100vh;
     width: 90%;
     margin: auto;
-    flex-wrap: wrap;
+    flex-wrap: wrap; */
+    display:flex;
+    flex-wrap : wrap;
 `;
 
 const StyledVideo = styled.video`
     height: 50%;
     width: 50%;
 `;
+
+function ZoomVideo(peerID){
+    console.log(peerID);
+    alert("dd");
+}
 
 const Video = (props) => {
     const ref = useRef();
@@ -27,10 +33,9 @@ const Video = (props) => {
     }, []);
 
     return (
-        <StyledVideo playsInline autoPlay ref={ref} />
+        <StyledVideo playsInline autoPlay ref={ref} onClick = {(e) => {ZoomVideo(e)}}/>
     );
 }
-
 
 const videoConstraints = {
     height: window.innerHeight / 2,
@@ -109,17 +114,20 @@ const Room = (props) => {
 
         return peer;
     }
+    // console.log(peers.length)
+    console.log(peers);s
 
     return (
         <Container>
-            <StyledVideo muted ref={userVideo} autoPlay playsInline />
+            <StyledVideo id = "parent" muted ref={userVideo} autoPlay playsInline onClick = {(e) => {ZoomVideo(e)}} />
             {peers.map((peer, index) => {
                 return (
-                    <Video key={index} peer={peer} />
+                    <Video key={index} peer={peer}/>
                 );
             })}
         </Container>
     );
 };
+
 
 export default Room;
