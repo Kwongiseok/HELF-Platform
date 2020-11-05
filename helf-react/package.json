@@ -3,11 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/cli": "^7.12.1",
     "@tensorflow-models/posenet": "^2.2.1",
     "@tensorflow/tfjs": "^2.7.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
+    "core-js": "^3.6.5",
     "peerjs": "1.3.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -19,8 +21,8 @@
     "socket.io": "^2.3.0",
     "styled-components": "^5.2.0"
   },
-  "scripts": {    
-    "start" : "react-scripts start",
+  "scripts": {
+    "start": "react-scripts start",
     "start:client": "react-scripts start",
     "start:server": "node ../Server/server.js",
     "build": "react-scripts build",
