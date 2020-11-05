@@ -2,13 +2,20 @@ require('dotenv').config();
 const express = require("express");
 const http = require("http");
 const app = express();
-const server = http.createServer(app);
+const cors = require('cors');
+app.use(cors());
+
+// const server = http.createServer(app);
+const server = app.listen(process.env.PORT || port, () => console.log('server is running'));
 const socket = require("socket.io");
 const io = socket(server);
 const mongoose = require('mongoose');
 const users = {};
 const port = 5000;
 const socketToRoom = {};
+
+
+
 
 io.on('connection', socket => {
     socket.on("join room", roomID => {
@@ -56,5 +63,5 @@ io.on('connection', socket => {
 //     server.listen(process.env.PORT || port, () => console.log('server is running'));
 //   })
 //   .catch((err) => console.log(err));
-server.listen(process.env.PORT || port, () => console.log('server is running'));
+
 
