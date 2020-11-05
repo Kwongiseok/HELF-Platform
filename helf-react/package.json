@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@babel/cli": "^7.12.1",
+    "@babel/runtime-corejs3": "^7.12.5",
     "@tensorflow-models/posenet": "^2.2.1",
     "@tensorflow/tfjs": "^2.7.0",
     "@testing-library/jest-dom": "^4.2.4",
