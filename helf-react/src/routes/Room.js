@@ -3,6 +3,11 @@ import io from "socket.io-client";
 import Peer from "simple-peer";
 import styled from "styled-components";
 
+/* tensorflow */
+import * as tf from "@tensorflow/tfjs";
+import * as posenet from "@tensorflow-models/posenet";
+import Webcam from "react-webcam";
+
 const Container = styled.div`
     /* display: flex;
     height: 100vh;
@@ -43,6 +48,7 @@ const videoConstraints = {
     width: window.innerWidth / 2
 };
 
+
 const Room = (props) => {
     const [peers, setPeers] = useState([]);
     const socketRef = useRef();
@@ -51,7 +57,7 @@ const Room = (props) => {
     const roomID = props.match.params.roomID;
 
     useEffect(() => {
-        socketRef.current = io.connect("http://localhost:5000");
+        socketRef.current = io.connect("https://helf-node.herokuapp.com/");
         navigator.mediaDevices.getUserMedia({ video: videoConstraints, audio: true }).then(stream => {
             userVideo.current.srcObject = stream;
             socketRef.current.emit("join room", roomID);
@@ -116,10 +122,11 @@ const Room = (props) => {
         return peer;
     }
     // console.log(peers.length)
+    console.log(peers);
 
     return (
         <Container>
-            <StyledVideo muted ref={userVideo} autoPlay playsInline onClick = {ZoomVideo(userVideo)}/>
+            <StyledVideo id = "parent" muted ref={userVideo} autoPlay playsInline onClick = {(e) => {console.log(e)}} />
             {peers.map((peer, index) => {
                 return (
                     <Video key={index} peer={peer}/>
