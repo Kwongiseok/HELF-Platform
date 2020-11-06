@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import { GoogleLogin } from 'react-google-login';
 import styled from 'styled-components';
 import { Redirect, withRouter } from 'react-router-dom';
+import LogoBox from "../Components/LogoBox"
 
-import Header from "../Components/Header"
+import NaverLogin from 'react-login-by-naver';
 
+//Google Login
 const clientID =
   '170179425708-lu3v7mptq4jn95giek3kbv845eov647l.apps.googleusercontent.com';
 
@@ -20,7 +22,7 @@ class LoginScreen extends Component {
     };
   }
 
-  //Login Success
+  //Google Login Success
   responseGoogle = (res) => {
     this.setState({
       id: res.googleId,
@@ -29,13 +31,31 @@ class LoginScreen extends Component {
       provider: 'google',
       isLogin : true,
     });
+    
+    console.log(this);
     this.doSignUp();
-
   };
-  //Login Fail
-  responseFail = (err) => {
+
+  //Google Login Fail
+  responseGoogleFail = (err) => {
     console.err(err);
   };
+
+  //Naver Login Success
+  responseNaver = (res) => {
+    this.setState({
+      id: res.id,
+      name: res.name,
+      email: res.email,
+      provider : 'naver',
+      isLogin : true,
+    });
+  }
+
+  //Naver Login Fail
+  responseNaverFail = (err) => {
+    console.err(err);
+  }
 
   doSignUp = () => {
     const { id, name, provider, email } = this.state;
@@ -50,22 +70,46 @@ class LoginScreen extends Component {
   render() {
     return (
       <Container>
-        <Header/>
-        <Login>
+        <LogoContainer>
+          <LogoBox/>
+        </LogoContainer>
+        <TextSNS>SNS로그인으로 간편하게</TextSNS>
+        <LoginContainer>
           <GoogleLogin
             clientId={clientID}
-            buttonText='Google Login'
+            buttonText='Google'
             onSuccess={this.responseGoogle}
-            onFailure={this.responseFail}
+            onFailure={this.responseGoogleFail}
           />
-        </Login>
+          <NaverLogin
+            clientId="oHvHR1J4ah36qMMt19YX"
+            callbackUrl="https://helf.ml/home"
+            render={(props) => <button onClick={props.onClick}>Naver</button>}
+            onSuccess={this.responseNaver}
+            onFailure={this.responseNaverFail}
+          />
+        </LoginContainer>
         {this.state.isLogin && <Redirect to = "/home"/>}
       </Container>
     );
   }
 }
 
-const Login = styled.div`
+const TextSNS = styled.div`
+  font-size: 12px;
+  text-align : center;
+  padding : 4px 0 12px 0;
+`;
+
+const LogoContainer = styled.div`
+  display : flex;
+  justify-content : space-around;
+  padding : 100px 0 30px 0;
+`;
+
+const LoginContainer = styled.div`
+  display : flex;
+  justify-content : center;
   /* display: flex;
   position: absolute;
   top: 50%;
@@ -74,6 +118,8 @@ const Login = styled.div`
   align-items: 'center';
   transform: translate(-50%, -50%); */
 `;
+
+
 
 const Container = styled.div`
   /* position: absolute;

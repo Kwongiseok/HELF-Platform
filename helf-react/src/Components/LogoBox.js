@@ -1,19 +1,19 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
-import logo from '../images/logo4.png'
+import logoImg from '../images/logo4.png'
 
-export default class Header extends Component{
+export default class LogoBox extends Component{
     render(){
         return(
             <Container>
-                <Logo src={logo}/>
+                <Logo src={logoImg}/>
                 <Title>헬프</Title>
             </Container>
-            );
+        );
     }
 }
 
-const Container = styled.span`
+const Container = styled.div`
     display: flex;
     justify-content:flex-start;
     align-items:center;
