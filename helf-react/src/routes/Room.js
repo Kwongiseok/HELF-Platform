@@ -13,14 +13,15 @@ const Container = styled.div`
     flex-wrap : wrap;
 `;
 
+
 const StyledVideo = styled.video`
     height: 50%;
     width: 50%;
 `;
 
-function ZoomVideo(peerID){
-    console.log(peerID);
-    alert("dd");
+function ZoomVideo(video){
+    // // console.log(video);
+    // console.log(video.current.clientHeight)
 }
 
 const Video = (props) => {
@@ -33,7 +34,7 @@ const Video = (props) => {
     }, []);
 
     return (
-        <StyledVideo playsInline autoPlay ref={ref} onClick = {(e) => {ZoomVideo(e)}}/>
+        <StyledVideo playsInline autoPlay ref={ref} onClick = {ZoomVideo(ref)}/>
     );
 }
 
@@ -115,11 +116,10 @@ const Room = (props) => {
         return peer;
     }
     // console.log(peers.length)
-    console.log(peers);s
 
     return (
         <Container>
-            <StyledVideo id = "parent" muted ref={userVideo} autoPlay playsInline onClick = {(e) => {ZoomVideo(e)}} />
+            <StyledVideo muted ref={userVideo} autoPlay playsInline onClick = {ZoomVideo(userVideo)}/>
             {peers.map((peer, index) => {
                 return (
                     <Video key={index} peer={peer}/>

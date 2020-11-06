@@ -5,10 +5,8 @@ import { Redirect, withRouter } from 'react-router-dom';
 
 import Header from "../Components/Header"
 
-
 const clientID =
   '170179425708-lu3v7mptq4jn95giek3kbv845eov647l.apps.googleusercontent.com';
-
 
 class LoginScreen extends Component {
   constructor(props) {
@@ -32,6 +30,7 @@ class LoginScreen extends Component {
       isLogin : true,
     });
     this.doSignUp();
+
   };
   //Login Fail
   responseFail = (err) => {
@@ -47,6 +46,7 @@ class LoginScreen extends Component {
     this.props.onLogin();
     this.props.history.push('/');
   };
+
   render() {
     return (
       <Container>
@@ -65,32 +65,24 @@ class LoginScreen extends Component {
   }
 }
 
-// const Logo = styled.img`
-//   src : ${LogoImage};
-//   width: 100%;
-// `;
-
-
 const Login = styled.div`
-  display: flex;
+  /* display: flex;
   position: absolute;
   top: 50%;
   left: 50%;
   justify-content: 'center';
   align-items: 'center';
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%); */
 `;
 
 const Container = styled.div`
-  position: absolute;
+  /* position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
   background-color: #d9afd9;
-  background-image: linear-gradient(0deg, #d9afd9 0%, #97d9e1 100%);
+  background-image: linear-gradient(0deg, #d9afd9 0%, #97d9e1 100%); */
 `;
-
-
 
 export default withRouter(LoginScreen);
