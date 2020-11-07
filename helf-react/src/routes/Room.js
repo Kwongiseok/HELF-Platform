@@ -1,12 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import Peer from "simple-peer";
-import styled from "styled-components";
+import styled, {createGlobalStyle} from "styled-components";
 
 /* tensorflow */
 import * as tf from "@tensorflow/tfjs";
 import * as posenet from "@tensorflow-models/posenet";
 import Webcam from "react-webcam";
+
+const GlobalStyle = createGlobalStyle`
+    body {
+        background-color : black;
+    }
+`;
 
 const Container = styled.div`
     /* display: flex;
@@ -126,6 +132,7 @@ const Room = (props) => {
 
     return (
         <Container>
+            <GlobalStyle/>
             <StyledVideo id = "parent" muted ref={userVideo} autoPlay playsInline onClick = {(e) => {console.log(e)}} />
             {peers.map((peer, index) => {
                 return (
@@ -135,6 +142,5 @@ const Room = (props) => {
         </Container>
     );
 };
-
 
 export default Room;
