@@ -22,14 +22,14 @@ const Container = styled.div`
 
 const Logo = styled.img`
     width: auto; height: auto;
-    max-width: 76.3px;
-    max-height: 60px;
+    max-width: 114.5px;
+    max-height: 90px;
     padding-top:15px;
 `;
 
 const Title = styled.h1`
     font-family:"Malgun-Godic";
-    font-size: 50px;
+    font-size: 80px;
     font-weight: 3em;
     margin : 0;
 `;

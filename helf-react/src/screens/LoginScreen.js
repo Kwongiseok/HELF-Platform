@@ -73,7 +73,17 @@ class LoginScreen extends Component {
         <LogoContainer>
           <LogoBox/>
         </LogoContainer>
-        <TextSNS>SNS로그인으로 간편하게</TextSNS>
+        {/* <TextSNS>SNS로그인으로 간편하게</TextSNS> */}
+    
+        {/* {this.state.isLogin && <Redirect to = "/home"/>} */}
+            
+        {this.state.isLogin ? 
+        // 로그인 전
+        <StartContainer>
+          <StartButton href="./video">입장하기</StartButton>
+          <EnterButton>방만들기</EnterButton>
+        </StartContainer> : 
+        // 로그인 후
         <LoginContainer>
           <GoogleLogin
             clientId={clientID}
@@ -83,23 +93,23 @@ class LoginScreen extends Component {
           />
           <NaverLogin
             clientId="oHvHR1J4ah36qMMt19YX"
-            callbackUrl="https://helf.ml/home"
+            callbackUrl="http://localhost:3000/"
             render={(props) => <button onClick={props.onClick}>Naver</button>}
             onSuccess={this.responseNaver}
             onFailure={this.responseNaverFail}
           />
-        </LoginContainer>
-        {this.state.isLogin && <Redirect to = "/home"/>}
+        </LoginContainer> }
+        
       </Container>
     );
   }
 }
 
-const TextSNS = styled.div`
-  font-size: 12px;
-  text-align : center;
-  padding : 4px 0 12px 0;
-`;
+// const TextSNS = styled.div`
+//   font-size: 12px;
+//   text-align : center;
+//   padding : 4px 0 12px 0;
+// `;
 
 const LogoContainer = styled.div`
   display : flex;
@@ -109,7 +119,9 @@ const LogoContainer = styled.div`
 
 const LoginContainer = styled.div`
   display : flex;
+  /* flex-direction : column; */
   justify-content : center;
+
   /* display: flex;
   position: absolute;
   top: 50%;
@@ -119,7 +131,33 @@ const LoginContainer = styled.div`
   transform: translate(-50%, -50%); */
 `;
 
+const StartContainer = styled.div`
+  display : flex;
+  flex-direction : column;
+  align-items : center;
+`;
 
+const StartButton = styled.a`
+  width : 300px;
+  font-size : 24px;
+  text-align : center;
+  background-color : #1a73e8;
+  color : white;
+  border-radius : 10px;
+  padding : 4px;
+  margin-bottom : 12px;
+`;
+
+const EnterButton = styled.a`
+  width:300px;
+  font-size : 24px;
+  text-align : center;
+  background-color : #e7e7e7;
+  color : white;
+  border-radius : 10px;
+  padding : 4px;
+  margin-bottom : 12px;
+`;
 
 const Container = styled.div`
   /* position: absolute;
