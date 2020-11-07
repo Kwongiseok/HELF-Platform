@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 import { GoogleLogin } from 'react-google-login';
+import NaverLogin from 'react-login-by-naver';
+import KakaoLogin from 'react-kakao-login';
+import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import styled from 'styled-components';
 import { Redirect, withRouter } from 'react-router-dom';
 import LogoBox from "../Components/LogoBox"
 
-import NaverLogin from 'react-login-by-naver';
-
-//Google Login
-const clientID =
-  '170179425708-lu3v7mptq4jn95giek3kbv845eov647l.apps.googleusercontent.com';
+//Login Cient IDs
+const googleID ='170179425708-lu3v7mptq4jn95giek3kbv845eov647l.apps.googleusercontent.com';
+const naverID = "oHvHR1J4ah36qMMt19YX";
+const kakaoID = "d1ff7d6c9ce92ba437a95f277ad4a992";
+const facebookID = "567205533996340";
 
 class LoginScreen extends Component {
   constructor(props) {
@@ -32,13 +35,13 @@ class LoginScreen extends Component {
       isLogin : true,
     });
     
-    console.log(this);
+    // console.log(this);
     this.doSignUp();
   };
 
   //Google Login Fail
   responseGoogleFail = (err) => {
-    console.err(err);
+    console.log(err);
   };
 
   //Naver Login Success
@@ -54,8 +57,46 @@ class LoginScreen extends Component {
 
   //Naver Login Fail
   responseNaverFail = (err) => {
-    console.err(err);
+    console.loh(err);
   }
+
+  //Kakao Login Success
+  responseKakao = (res) => {
+    this.setState({
+      id: res.profile.id,
+      name: res.profile.properties.nickname,
+      email: res.kakao_acount.email,
+      provider: 'kakao',
+      isLogin : true,
+    });
+    
+    console.log(this);
+    this.doSignUp();
+  };
+
+  //Kakao Login Fail
+  responseKakaoFail = (err) => {
+    console.loh(err);
+  };
+
+  //Facebook Login Success
+  responseFacebook = (res) => {
+    this.setState({
+      id: res.id,
+      name: res.name,
+      email: res.email,
+      provider: 'facebook',
+      isLogin : true,
+    });
+    
+    console.log(this);
+    this.doSignUp();
+  };
+
+  //Facebook Login Fail
+  responseFacebookFail = (err) => {
+    console.log(err);
+  };
 
   doSignUp = () => {
     const { id, name, provider, email } = this.state;
@@ -67,6 +108,7 @@ class LoginScreen extends Component {
     this.props.history.push('/');
   };
 
+
   render() {
     return (
       <Container>
@@ -74,32 +116,58 @@ class LoginScreen extends Component {
           <LogoBox/>
         </LogoContainer>
         {/* <TextSNS>SNS로그인으로 간편하게</TextSNS> */}
-    
         {/* {this.state.isLogin && <Redirect to = "/home"/>} */}
             
         {this.state.isLogin ? 
         // 로그인 전
         <StartContainer>
-          <StartButton href="./video">입장하기</StartButton>
-          <EnterButton>방만들기</EnterButton>
+          <StartButton Enter href="./video">시작하기</StartButton>
+          <StartButton Make href="#">방만들기</StartButton>
         </StartContainer> : 
+        
         // 로그인 후
         <LoginContainer>
+          <NaverLogin
+            clientId={naverID}
+            callbackUrl="http://localhost:3000/"
+            render={props => (
+              <StyledContainer>
+                <StyledLogin Naver onClick={props.onClick}>Naver</StyledLogin>
+              </StyledContainer>
+            )}onSuccess={this.responseNaver}
+            onFailure={this.responseNaverFail}
+          />
           <GoogleLogin
-            clientId={clientID}
-            buttonText='Google'
+            clientId={googleID}
+            render={props => (
+              <StyledContainer>
+                <StyledLogin Google onClick={props.onClick}>Google</StyledLogin>
+              </StyledContainer>
+            )}
             onSuccess={this.responseGoogle}
             onFailure={this.responseGoogleFail}
           />
-          <NaverLogin
-            clientId="oHvHR1J4ah36qMMt19YX"
-            callbackUrl="http://localhost:3000/"
-            render={(props) => <button onClick={props.onClick}>Naver</button>}
-            onSuccess={this.responseNaver}
-            onFailure={this.responseNaverFail}
+          <KakaoLogin
+            jsKey = {kakaoID}
+            onSuccess = {this.responseKako}
+            onFail = {this.responseKakaoFail}
+            render={props => (
+              <StyledContainer>
+                <StyledLogin Kakao onClick={props.onClick}>Kakao</StyledLogin>
+              </StyledContainer>)}
           />
+          <FacebookLogin
+            appId={facebookID}
+            onSuccess = {this.responseFacebook}
+            onFailure = {this.responseFacebookFail}
+            autoLoad={false}
+            fields="id,name,email"
+            render={props => (
+              <StyledContainer>
+                <StyledLogin Facebook onClick={props.onClick}>Facebook</StyledLogin>
+              </StyledContainer>)}
+          />  
         </LoginContainer> }
-        
       </Container>
     );
   }
@@ -118,17 +186,42 @@ const LogoContainer = styled.div`
 `;
 
 const LoginContainer = styled.div`
-  display : flex;
-  /* flex-direction : column; */
-  justify-content : center;
+  /* display : flex;
+  flex-direction : column;
+  justify-content : center; */
+`;
 
-  /* display: flex;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  justify-content: 'center';
-  align-items: 'center';
-  transform: translate(-50%, -50%); */
+const StyledLogin = styled.a`
+  width : 300px;
+  font-size : 24px;
+  text-align : center;
+  border-radius : 10px;
+  padding : 10px;
+  margin-bottom : 12px;
+  text-decoration:none;
+  background: ${props => { 
+      if(props.Naver) { return "#1ec800"}
+      else if(props.Google) {return "#FE2E2E"}
+      else if(props.Kakao) {return '#FFBF00'}
+      else if(props.Facebook) {return '#2E64FE'}
+  }};
+  color:#fff; 
+  border-radius: 4px; 
+  font-weight:bold;
+  transition: all 0.2s; -webkit-transition: all 0.2s; -moz-transition: all 0.2s; -o-transition: all 0.2s;
+
+  &:hover{
+    background: ${props => { 
+      if(props.Naver) { return "#169600"}
+      else if(props.Google) {return "#c0392b"}
+      else if(props.Kakao) {return '#ce9700'}
+      else if(props.Facebook) {return '#1f4cc6'}
+  }}};
+`;
+
+const StyledContainer = styled.div`
+  display : flex;
+  justify-content : center;
 `;
 
 const StartContainer = styled.div`
@@ -141,22 +234,16 @@ const StartButton = styled.a`
   width : 300px;
   font-size : 24px;
   text-align : center;
-  background-color : #1a73e8;
-  color : white;
+  background-color : ${props => (props.Enter ? "#3498db" : "#bdc3c7")}; 
   border-radius : 10px;
-  padding : 4px;
+  padding : 10px;
   margin-bottom : 12px;
-`;
+  text-decoration:none;
+  border-radius: 4px; font-weight:bold; color:#fff; transition: all 0.2s; -webkit-transition: all 0.2s; -moz-transition: all 0.2s; -o-transition: all 0.2s;
 
-const EnterButton = styled.a`
-  width:300px;
-  font-size : 24px;
-  text-align : center;
-  background-color : #e7e7e7;
-  color : white;
-  border-radius : 10px;
-  padding : 4px;
-  margin-bottom : 12px;
+  &:hover{
+    background-color : ${props => (props.Enter ? "#2980b9" : "#7f8c8d")};
+  }
 `;
 
 const Container = styled.div`
