@@ -2,33 +2,11 @@ import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import Peer from "simple-peer";
 import styled, {createGlobalStyle} from "styled-components";
+import { drawKeypoints, drawSkeleton } from "../utilities";
 
 /* tensorflow */
 import * as tf from "@tensorflow/tfjs";
 import * as posenet from "@tensorflow-models/posenet";
-import {drawKeypoints, drawSkeleton} from "../utilities"
-
-const GlobalStyle = createGlobalStyle`
-    body {
-        background-color : black;
-    }
-`;
-
-const Container = styled.div`
-    /* display: flex;
-    height: 100vh;
-    width: 90%;
-    margin: auto;
-    flex-wrap: wrap; */
-    display:flex;
-    flex-wrap : wrap;
-`;
-
-
-const StyledVideo = styled.video`
-    height: 300px;
-    width: 300px;
-`;
 
 function ZoomVideo(video){
     // // console.log(video);
@@ -174,19 +152,19 @@ const Room = (props) => {
     return (
         <Container>
             <GlobalStyle/>
-            <div id = "test" >
-            <StyledVideo id = "parent" muted ref={userVideo} autoPlay playsInline onClick = {(e) => {console.log(e)}} 
-                      style={{
-                        position: "absolute",
-                        marginLeft: "auto",
-                        marginRight: "auto",
-                        left: 0,
-                        right: 0,
-                        textAlign: "center",
-                        zindex: 9,
-                        width: 640,
-                        height: 480,
-                      }}/>
+            <div id = "Host" >
+            <StyledVideo id = "parent" muted ref={userVideo} autoPlay playsInline onClick = {(e) => {console.log(e)}}
+         style={{
+            position: "absolute",
+            marginLeft: "auto",
+            marginRight: "auto",
+            left: 0,
+            right: 0,
+            textAlign: "center",
+            zindex: 9,
+            width: 640,
+            height: 480,
+          }} />
             <canvas
           ref={canvasRef}
           style={{
@@ -201,7 +179,8 @@ const Room = (props) => {
             height: 480,
           }}
         />
-            </div>
+    </div>
+            {/* <NameTag></NameTag> */}
             {peers.map((peer, index) => {
                 return (
                     <Video key={index} peer={peer}/>
@@ -210,5 +189,29 @@ const Room = (props) => {
         </Container>
     );
 };
+
+
+const GlobalStyle = createGlobalStyle`
+    body {
+        background-color : black;
+    }
+`;
+
+const Container = styled.div`
+    /* display: flex;
+    height: 100vh;
+    width: 90%;
+    margin: auto;
+    flex-wrap: wrap; */
+    display:flex;
+    flex-wrap : wrap;
+`;
+
+
+const StyledVideo = styled.video`
+    height: 50%;
+    width: 50%;
+`;
+
 
 export default Room;
