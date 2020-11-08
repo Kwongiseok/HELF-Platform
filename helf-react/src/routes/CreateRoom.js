@@ -14,14 +14,9 @@ const CreateRoom = (props) => {
         const id = uuid();
         props.history.push(`/room/${id}`);
     }
-
     return (
         window.sessionStorage.isLogin ?
-<<<<<<< HEAD
-        <button onClick={create}>Create room</button> : <Redirect to = "/"></Redirect>
-=======
         <button onClick={create}>Create room</button> : <Redirect to ="/"/>
->>>>>>> taekhun
     ); 
 };
 
