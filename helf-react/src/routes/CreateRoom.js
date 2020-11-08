@@ -8,7 +8,8 @@ const CreateRoom = (props) => {
     }
 
     return (
-        <button onClick={create}>Create room</button>
+        window.sessionStorage.isLogin ? 
+        <button onClick={create}>Create room</button> : null
     );
 };
 

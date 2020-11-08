@@ -6,8 +6,7 @@ import styled, {createGlobalStyle} from "styled-components";
 /* tensorflow */
 import * as tf from "@tensorflow/tfjs";
 import * as posenet from "@tensorflow-models/posenet";
-import Webcam from "react-webcam";
-// import {drawKeypoints, drawSkeleton} from "../utilities"
+import {drawKeypoints, drawSkeleton} from "../utilities"
 
 const GlobalStyle = createGlobalStyle`
     body {
@@ -36,56 +35,13 @@ function ZoomVideo(video){
     // console.log(video.current.clientHeight)
 }
 
-<<<<<<< HEAD
-// const runPosenet = async () => {
-//     const net = await posenet.load({
-//         inputResolution:{width: "50%" , height:"50%"},
-//         scale : 0.5
-//     })
-//     setInterval(()=> {
-//         detect(net)
-//     },100);
-
-// }
-/* posenet */
-
-// const Video = (props) => {
-//     webcamRef = useRef();
-//     canvasRef = useRef();
-//     useEffect(() => {
-//         props.peer.on("stream", stream => {
-//             webcamRef.current.srcObject = stream;
-//         })
-//     }, []);
-
-//     return (
-//         <div className = "Webcam">
-//             <StyledVideo playsInline autoPlay ref={webcamRef} onClick = {(e) => {ZoomVideo(e)}} />
-//             <canvas ref = {canvasRef} />
-//         </div>
-//         );
-// } 
-=======
-const Video = (props) => {
-    const ref = useRef();
-
-    useEffect(() => {
-        props.peer.on("stream", stream => {
-            ref.current.srcObject = stream;
-        })
-    }, []);
-
-    return (
-        <StyledVideo playsInline autoPlay ref={ref} onClick = {ZoomVideo(ref)}/>
-    );
-}
->>>>>>> 109614888f2def2a299fed172fcbb2ba32bc41f9
-
 const videoConstraints = {
-    height: window.innerHeight / 2,
-    width: window.innerWidth / 2
-};
 
+    height : 300,
+    width : 300
+    // height: window.innerHeight / 2,
+    // width: window.innerWidth / 2
+}
 
 const Room = (props) => {
     /* video */
@@ -113,24 +69,33 @@ const Room = (props) => {
     const roomID = props.match.params.roomID;
 
     const detect = async (net) => {
-        if(typeof webcamRef !== "undefined" && typeof webcamRef.current !== "undefined" && webcamRef.current !== null) {
-            console.log('detect 실행');
+        if(typeof userVideo !== "undefined" && typeof userVideo.current !== "undefined" && userVideo.current !== null &&
+        userVideo.current.readyState === 4) {
             
-            const video = webcamRef.current.srcObject;
-            console.log(video)
-            // const videoWidth = webcamRef.current.srcObject.videoWidth;
-            // const videoHeight = webcamRef.current.srcObject.videoHeight;
+            const video = userVideo.current;
+            const videoWidth = userVideo.current.videoWidth;
+            const videoHeight = userVideo.current.videoHeight;
             // Set video width
-            // webcamRef.current.srcObject.width = videoWidth;
-            // webcamRef.current.srcObject.height = videoHeight;
+            userVideo.current.width = videoWidth;
+            userVideo.current.height = videoHeight;
             
             // Make Detection
-            const pose = await net.estimateSinglePose(webcamRef);
+            const pose = await net.estimateSinglePose(video);
             console.log(pose);
+
+            drawCanvas(pose, video, videoWidth, videoHeight, canvasRef);
+
         }
     }
+    const drawCanvas = (pose, video, videoWidth, videoHeight, canvas) => {
+        const ctx = canvas.current.getContext("2d");
+        canvas.current.width = videoWidth;
+        canvas.current.height = videoHeight;
+    
+        drawKeypoints(pose["keypoints"], 0.6, ctx);
+        drawSkeleton(pose["keypoints"], 0.7, ctx);
+      };
     const runPosenet = async () => {
-        console.log('u')
         const net = await posenet.load({
             inputResolution:{width:300 , height:300},
             scale : 0.5
@@ -144,7 +109,6 @@ const Room = (props) => {
         socketRef.current = io.connect("https://helf-node.herokuapp.com/");
         navigator.mediaDevices.getUserMedia({ video: videoConstraints, audio: true }).then(stream => {
             userVideo.current.srcObject = stream;
-            console.log(userVideo)
             socketRef.current.emit("join room", roomID);
             socketRef.current.on("all users", users => {
                 const peers = [];
@@ -206,13 +170,38 @@ const Room = (props) => {
 
         return peer;
     }
-    // console.log(peers.length)
-    console.log(peers);
 
     return (
         <Container>
             <GlobalStyle/>
-            <StyledVideo id = "parent" muted ref={userVideo} autoPlay playsInline onClick = {(e) => {console.log(e)}} />
+            <div id = "test" >
+            <StyledVideo id = "parent" muted ref={userVideo} autoPlay playsInline onClick = {(e) => {console.log(e)}} 
+                      style={{
+                        position: "absolute",
+                        marginLeft: "auto",
+                        marginRight: "auto",
+                        left: 0,
+                        right: 0,
+                        textAlign: "center",
+                        zindex: 9,
+                        width: 640,
+                        height: 480,
+                      }}/>
+            <canvas
+          ref={canvasRef}
+          style={{
+            position: "absolute",
+            marginLeft: "auto",
+            marginRight: "auto",
+            left: 0,
+            right: 0,
+            textAlign: "center",
+            zindex: 9,
+            width: 640,
+            height: 480,
+          }}
+        />
+            </div>
             {peers.map((peer, index) => {
                 return (
                     <Video key={index} peer={peer}/>

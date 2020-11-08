@@ -39,11 +39,6 @@ class LoginScreen extends Component {
     this.doSignUp();
     
   };
-<<<<<<< HEAD
-  //Login Fail
-  responseFail = (err) => {
-    console.error(err);
-=======
 
   //Google Login Fail
   responseGoogleFail = (err) => {
@@ -102,15 +97,15 @@ class LoginScreen extends Component {
   //Facebook Login Fail
   responseFacebookFail = (err) => {
     console.log(err);
->>>>>>> 109614888f2def2a299fed172fcbb2ba32bc41f9
   };
 
   doSignUp = () => {
-    const { id, name, provider, email } = this.state;
+    const { id, name, provider, email , isLogin} = this.state;
     window.sessionStorage.setItem('id', id);
     window.sessionStorage.setItem('name', name);
     window.sessionStorage.setItem('provider', provider);
     window.sessionStorage.setItem('email', email);
+    window.sessionStorage.setItem('isLogin',isLogin);
     console.log('login success');
     this.props.history.push('/');
   };
@@ -163,10 +158,6 @@ class LoginScreen extends Component {
                 <StyledLogin Kakao onClick={props.onClick}>Kakao</StyledLogin>
               </StyledContainer>)}
           />
-<<<<<<< HEAD
-        </Login>
-        {/* {this.state.isLogin && <Redirect to = "/home" />} */}
-=======
           <FacebookLogin
             appId={facebookID}
             onSuccess = {this.responseFacebook}
@@ -179,7 +170,6 @@ class LoginScreen extends Component {
               </StyledContainer>)}
           />  
         </LoginContainer> }
->>>>>>> 109614888f2def2a299fed172fcbb2ba32bc41f9
       </Container>
     );
   }
