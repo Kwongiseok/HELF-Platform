@@ -1,7 +1,7 @@
 import React from "react";
 import { v1 as uuid } from "uuid";
 import LoginScreen from "../screens/LoginScreen"
-import { Redirect } from 'react-router-dom';
+import {Redirect} from 'react-router-dom';
 
 function isLogged(){
     let res;
@@ -17,7 +17,11 @@ const CreateRoom = (props) => {
 
     return (
         window.sessionStorage.isLogin ?
+<<<<<<< HEAD
         <button onClick={create}>Create room</button> : <Redirect to = "/"></Redirect>
+=======
+        <button onClick={create}>Create room</button> : <Redirect to ="/"/>
+>>>>>>> taekhun
     ); 
 };
 

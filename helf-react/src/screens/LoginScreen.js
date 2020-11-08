@@ -35,6 +35,7 @@ class LoginScreen extends Component {
       isLogin : true,
     });
     this.doSignUp();
+    
   };
 
   //Google Login Fail
