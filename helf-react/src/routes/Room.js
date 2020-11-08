@@ -3,32 +3,10 @@ import io from "socket.io-client";
 import Peer from "simple-peer";
 import styled, {createGlobalStyle} from "styled-components";
 
-/* tensorflow */
-import * as tf from "@tensorflow/tfjs";
-import * as posenet from "@tensorflow-models/posenet";
-import Webcam from "react-webcam";
-
-const GlobalStyle = createGlobalStyle`
-    body {
-        background-color : black;
-    }
-`;
-
-const Container = styled.div`
-    /* display: flex;
-    height: 100vh;
-    width: 90%;
-    margin: auto;
-    flex-wrap: wrap; */
-    display:flex;
-    flex-wrap : wrap;
-`;
-
-
-const StyledVideo = styled.video`
-    height: 50%;
-    width: 50%;
-`;
+// /* tensorflow */
+// import * as tf from "@tensorflow/tfjs";
+// import * as posenet from "@tensorflow-models/posenet";
+// import Webcam from "react-webcam";
 
 function ZoomVideo(video){
     // // console.log(video);
@@ -134,6 +112,7 @@ const Room = (props) => {
         <Container>
             <GlobalStyle/>
             <StyledVideo id = "parent" muted ref={userVideo} autoPlay playsInline onClick = {(e) => {console.log(e)}} />
+            {/* <NameTag></NameTag> */}
             {peers.map((peer, index) => {
                 return (
                     <Video key={index} peer={peer}/>
@@ -142,5 +121,29 @@ const Room = (props) => {
         </Container>
     );
 };
+
+
+const GlobalStyle = createGlobalStyle`
+    body {
+        background-color : black;
+    }
+`;
+
+const Container = styled.div`
+    /* display: flex;
+    height: 100vh;
+    width: 90%;
+    margin: auto;
+    flex-wrap: wrap; */
+    display:flex;
+    flex-wrap : wrap;
+`;
+
+
+const StyledVideo = styled.video`
+    height: 50%;
+    width: 50%;
+`;
+
 
 export default Room;

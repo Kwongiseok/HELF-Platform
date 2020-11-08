@@ -34,8 +34,6 @@ class LoginScreen extends Component {
       provider: 'google',
       isLogin : true,
     });
-    
-    // console.log(this);
     this.doSignUp();
   };
 
@@ -47,12 +45,13 @@ class LoginScreen extends Component {
   //Naver Login Success
   responseNaver = (res) => {
     this.setState({
-      id: res.id,
-      name: res.name,
-      email: res.email,
+      id: res.response.id,
+      name: res.response.name,
+      email: res.response.email,
       provider : 'naver',
       isLogin : true,
     });
+    this.doSignUp();
   }
 
   //Naver Login Fail
@@ -69,8 +68,7 @@ class LoginScreen extends Component {
       provider: 'kakao',
       isLogin : true,
     });
-    
-    console.log(this);
+    console.log(res.profile.id);
     this.doSignUp();
   };
 
@@ -88,8 +86,6 @@ class LoginScreen extends Component {
       provider: 'facebook',
       isLogin : true,
     });
-    
-    console.log(this);
     this.doSignUp();
   };
 
@@ -99,12 +95,13 @@ class LoginScreen extends Component {
   };
 
   doSignUp = () => {
-    const { id, name, provider, email } = this.state;
+    const { id, name, provider, email, isLogin } = this.state;
     window.sessionStorage.setItem('id', id);
     window.sessionStorage.setItem('name', name);
     window.sessionStorage.setItem('provider', provider);
     window.sessionStorage.setItem('email', email);
-    this.props.onLogin();
+    window.sessionStorage.setItem('isLogin', isLogin);
+    // this.props.onLogin();
     this.props.history.push('/');
   };
 
@@ -129,13 +126,14 @@ class LoginScreen extends Component {
         <LoginContainer>
           <NaverLogin
             clientId={naverID}
-            callbackUrl="https://helf.ml"
+            callbackUrl="http://localhost:3000/"
             render={props => (
               <StyledContainer>
                 <StyledLogin Naver onClick={props.onClick}>Naver</StyledLogin>
               </StyledContainer>
             )}onSuccess={this.responseNaver}
             onFailure={this.responseNaverFail}
+
           />
           <GoogleLogin
             clientId={googleID}
