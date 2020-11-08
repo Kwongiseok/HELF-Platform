@@ -7,6 +7,7 @@ import styled from "styled-components";
 import * as tf from "@tensorflow/tfjs";
 import * as posenet from "@tensorflow-models/posenet";
 import Webcam from "react-webcam";
+// import {drawKeypoints, drawSkeleton} from "../utilities"
 
 const Container = styled.div`
     /* display: flex;
@@ -19,8 +20,8 @@ const Container = styled.div`
 `;
 
 const StyledVideo = styled.video`
-    height: 50%;
-    width: 50%;
+    height: 300px;
+    width: 300px;
 `;
 
 function ZoomVideo(peerID){
@@ -28,19 +29,34 @@ function ZoomVideo(peerID){
     alert("dd");
 }
 
-const Video = (props) => {
-    const ref = useRef();
+// const runPosenet = async () => {
+//     const net = await posenet.load({
+//         inputResolution:{width: "50%" , height:"50%"},
+//         scale : 0.5
+//     })
+//     setInterval(()=> {
+//         detect(net)
+//     },100);
 
-    useEffect(() => {
-        props.peer.on("stream", stream => {
-            ref.current.srcObject = stream;
-        })
-    }, []);
+// }
+/* posenet */
 
-    return (
-        <StyledVideo playsInline autoPlay ref={ref} onClick = {(e) => {ZoomVideo(e)}}/>
-    );
-}
+// const Video = (props) => {
+//     webcamRef = useRef();
+//     canvasRef = useRef();
+//     useEffect(() => {
+//         props.peer.on("stream", stream => {
+//             webcamRef.current.srcObject = stream;
+//         })
+//     }, []);
+
+//     return (
+//         <div className = "Webcam">
+//             <StyledVideo playsInline autoPlay ref={webcamRef} onClick = {(e) => {ZoomVideo(e)}} />
+//             <canvas ref = {canvasRef} />
+//         </div>
+//         );
+// } 
 
 const videoConstraints = {
     height: window.innerHeight / 2,
@@ -49,16 +65,63 @@ const videoConstraints = {
 
 
 const Room = (props) => {
+    /* video */
+    const webcamRef = useRef();
+    const canvasRef = useRef();
+    const Video = (props) => {
+        useEffect(() => {
+            props.peer.on("stream", stream => {
+                webcamRef.current.srcObject = stream;
+            })
+        }, []);
+    
+        return (
+            <div className = "Webcam">
+                <StyledVideo playsInline autoPlay ref={webcamRef} onClick = {(e) => {ZoomVideo(e)}} />
+                <canvas ref = {canvasRef} />
+            </div>
+            );
+    } 
+    /* room */
     const [peers, setPeers] = useState([]);
     const socketRef = useRef();
     const userVideo = useRef();
     const peersRef = useRef([]);
     const roomID = props.match.params.roomID;
 
+    const detect = async (net) => {
+        if(typeof webcamRef !== "undefined" && typeof webcamRef.current !== "undefined" && webcamRef.current !== null) {
+            console.log('detect 실행');
+            
+            const video = webcamRef.current.srcObject;
+            console.log(video)
+            // const videoWidth = webcamRef.current.srcObject.videoWidth;
+            // const videoHeight = webcamRef.current.srcObject.videoHeight;
+            // Set video width
+            // webcamRef.current.srcObject.width = videoWidth;
+            // webcamRef.current.srcObject.height = videoHeight;
+            
+            // Make Detection
+            const pose = await net.estimateSinglePose(webcamRef);
+            console.log(pose);
+        }
+    }
+    const runPosenet = async () => {
+        console.log('u')
+        const net = await posenet.load({
+            inputResolution:{width:300 , height:300},
+            scale : 0.5
+        })
+        setInterval(()=> {
+            detect(net)
+        },100);
+    }
+    runPosenet();
     useEffect(() => {
         socketRef.current = io.connect("https://helf-node.herokuapp.com/");
         navigator.mediaDevices.getUserMedia({ video: videoConstraints, audio: true }).then(stream => {
             userVideo.current.srcObject = stream;
+            console.log(userVideo)
             socketRef.current.emit("join room", roomID);
             socketRef.current.on("all users", users => {
                 const peers = [];
@@ -67,7 +130,7 @@ const Room = (props) => {
                     peersRef.current.push({
                         peerID: userID,
                         peer,
-                    })
+                    })  
                     peers.push(peer);
                 })
                 setPeers(peers);

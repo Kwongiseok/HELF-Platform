@@ -59,7 +59,7 @@ class App extends Component {
       <Store.Provider value={this.state}>
         <BrowserRouter>
           <Switch>
-            <Route exact path="/" onLogin={this.onLogin} onLogout={this.onLogout} component={LoginScreen} />
+            <Route exact path="/" component={LoginScreen} />
             <Route path="/video"  component={CreateRoom} />
             <Route path="/room/:roomID" component={Room} />
             <Route path="/home" component={HomeScreen} />

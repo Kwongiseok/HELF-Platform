@@ -6,12 +6,12 @@ const cors = require('cors');
 app.use(cors());
 
 // const server = http.createServer(app);
+const port = 5000;
 const server = app.listen(process.env.PORT || port, () => console.log('server is running'));
 const socket = require("socket.io");
 const io = socket(server);
 const mongoose = require('mongoose');
 const users = {};
-const port = 5000;
 const socketToRoom = {};
 
 

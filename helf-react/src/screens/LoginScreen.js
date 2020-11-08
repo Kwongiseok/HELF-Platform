@@ -32,10 +32,11 @@ class LoginScreen extends Component {
       isLogin : true,
     });
     this.doSignUp();
+    
   };
   //Login Fail
   responseFail = (err) => {
-    console.err(err);
+    console.error(err);
   };
 
   doSignUp = () => {
@@ -44,7 +45,7 @@ class LoginScreen extends Component {
     window.sessionStorage.setItem('name', name);
     window.sessionStorage.setItem('provider', provider);
     window.sessionStorage.setItem('email', email);
-    this.props.onLogin();
+    console.log('login success');
     this.props.history.push('/');
   };
   render() {
@@ -59,7 +60,7 @@ class LoginScreen extends Component {
             onFailure={this.responseFail}
           />
         </Login>
-        {this.state.isLogin && <Redirect to = "/home"/>}
+        {/* {this.state.isLogin && <Redirect to = "/home" />} */}
       </Container>
     );
   }
