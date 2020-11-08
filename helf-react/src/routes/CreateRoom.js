@@ -14,7 +14,6 @@ const CreateRoom = (props) => {
         const id = uuid();
         props.history.push(`/room/${id}`);
     }
-
     return (
         window.sessionStorage.isLogin ?
         <button onClick={create}>Create room</button> : <Redirect to ="/"/>
