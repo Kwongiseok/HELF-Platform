@@ -129,7 +129,7 @@ class LoginScreen extends Component {
         <LoginContainer>
           <NaverLogin
             clientId={naverID}
-            callbackUrl="http://localhost:3000/"
+            callbackUrl="https://helf.ml"
             render={props => (
               <StyledContainer>
                 <StyledLogin Naver onClick={props.onClick}>Naver</StyledLogin>
