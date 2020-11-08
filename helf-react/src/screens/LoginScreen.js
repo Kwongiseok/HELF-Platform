@@ -57,7 +57,7 @@ class LoginScreen extends Component {
 
   //Naver Login Fail
   responseNaverFail = (err) => {
-    console.loh(err);
+    console.log(err);
   }
 
   //Kakao Login Success
@@ -76,7 +76,7 @@ class LoginScreen extends Component {
 
   //Kakao Login Fail
   responseKakaoFail = (err) => {
-    console.loh(err);
+    console.log(err);
   };
 
   //Facebook Login Success
