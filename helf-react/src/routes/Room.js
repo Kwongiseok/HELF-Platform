@@ -1,13 +1,19 @@
 import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import Peer from "simple-peer";
-import styled from "styled-components";
+import styled, {createGlobalStyle} from "styled-components";
 
 /* tensorflow */
 import * as tf from "@tensorflow/tfjs";
 import * as posenet from "@tensorflow-models/posenet";
 import Webcam from "react-webcam";
 // import {drawKeypoints, drawSkeleton} from "../utilities"
+
+const GlobalStyle = createGlobalStyle`
+    body {
+        background-color : black;
+    }
+`;
 
 const Container = styled.div`
     /* display: flex;
@@ -19,16 +25,18 @@ const Container = styled.div`
     flex-wrap : wrap;
 `;
 
+
 const StyledVideo = styled.video`
     height: 300px;
     width: 300px;
 `;
 
-function ZoomVideo(peerID){
-    console.log(peerID);
-    alert("dd");
+function ZoomVideo(video){
+    // // console.log(video);
+    // console.log(video.current.clientHeight)
 }
 
+<<<<<<< HEAD
 // const runPosenet = async () => {
 //     const net = await posenet.load({
 //         inputResolution:{width: "50%" , height:"50%"},
@@ -57,6 +65,21 @@ function ZoomVideo(peerID){
 //         </div>
 //         );
 // } 
+=======
+const Video = (props) => {
+    const ref = useRef();
+
+    useEffect(() => {
+        props.peer.on("stream", stream => {
+            ref.current.srcObject = stream;
+        })
+    }, []);
+
+    return (
+        <StyledVideo playsInline autoPlay ref={ref} onClick = {ZoomVideo(ref)}/>
+    );
+}
+>>>>>>> 109614888f2def2a299fed172fcbb2ba32bc41f9
 
 const videoConstraints = {
     height: window.innerHeight / 2,
@@ -188,6 +211,7 @@ const Room = (props) => {
 
     return (
         <Container>
+            <GlobalStyle/>
             <StyledVideo id = "parent" muted ref={userVideo} autoPlay playsInline onClick = {(e) => {console.log(e)}} />
             {peers.map((peer, index) => {
                 return (
@@ -197,6 +221,5 @@ const Room = (props) => {
         </Container>
     );
 };
-
 
 export default Room;

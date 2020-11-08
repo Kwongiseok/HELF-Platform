@@ -64,4 +64,18 @@ io.on('connection', socket => {
 //   })
 //   .catch((err) => console.log(err));
 
+<<<<<<< HEAD
+// mongoose
+//   .connect(
+//     'mongodb+srv://KwonGiseok:gab4r2K5fao0hxMx@cluster0.1fcgr.gcp.mongodb.net/HealthFriend?retryWrites=true&w=majority',
+//     { useNewUrlParser: true, useUnifiedTopology: true }
+//   )
+//   .then(() => {
+//     server.listen(process.env.PORT || port, () => console.log('server is running'));
+//   })
+//   .catch((err) => console.log(err));
 
+=======
+>>>>>>> 9e3eae97ed6516ebde004d1597ff8941a6289ff8
+
+server.listen(process.env.PORT || port, () => console.log('server is running'));
