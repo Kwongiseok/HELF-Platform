@@ -1,49 +1,29 @@
-import React, { Component } from 'react';
-import { GoogleLogin } from 'react-google-login';
-import NaverLogin from 'react-login-by-naver';
-import KakaoLogin from 'react-kakao-login';
+import React, { Component } from "react";
+import { GoogleLogin } from "react-google-login";
+import NaverLogin from "react-login-by-naver";
+// import NaverLogin from "@dohyeon/react-naver-login";
+import KakaoLogin from "react-kakao-login";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
-import styled from 'styled-components';
-import { Redirect, withRouter } from 'react-router-dom';
-import LogoBox from "../Components/LogoBox"
+import styled from "styled-components";
+import { Redirect, withRouter } from "react-router-dom";
+import LogoBox from "../Components/LogoBox";
 
 //Login Cient IDs
-const googleID ='170179425708-lu3v7mptq4jn95giek3kbv845eov647l.apps.googleusercontent.com';
+const googleID =
+  "170179425708-lu3v7mptq4jn95giek3kbv845eov647l.apps.googleusercontent.com";
 const naverID = "oHvHR1J4ah36qMMt19YX";
 const kakaoID = "d1ff7d6c9ce92ba437a95f277ad4a992";
 const facebookID = "567205533996340";
-
-const WithRender = () => (
-  <KakaoLogin
-    token={kakaoID}
-    onSuccess={console.log}
-    onFail={console.error}
-    onLogout={console.info}
-    render={({ onClick }) => {
-      return (
-        <a
-          href="http://www.naver.com"
-          onClick={(e) => {
-            e.preventDefault();
-            onClick();
-          }}
-        >
-          카카오로 로그인하기
-        </a>
-      );
-    }}
-  />
-);
 
 class LoginScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: '',
-      name: '',
-      email: '',
-      provider: '',
-      isLogin : false,
+      id: "",
+      name: "",
+      email: "",
+      provider: "",
+      isLogin: false,
     };
   }
 
@@ -53,11 +33,10 @@ class LoginScreen extends Component {
       id: res.googleId,
       name: res.profileObj.name,
       email: res.profileObj.email,
-      provider: 'google',
-      isLogin : true,
+      provider: "google",
+      isLogin: true,
     });
     this.doSignUp();
-    
   };
 
   //Google Login Fail
@@ -71,25 +50,25 @@ class LoginScreen extends Component {
       id: res.response.id,
       name: res.response.name,
       email: res.response.email,
-      provider : 'naver',
-      isLogin : true,
+      provider: "naver",
+      isLogin: true,
     });
     this.doSignUp();
-  }
+  };
 
   //Naver Login Fail
   responseNaverFail = (err) => {
     console.log(err);
-  }
+  };
 
   //Kakao Login Success
   responseKakao = (res) => {
     this.setState({
       id: res.profile.id,
       name: res.profile.properties.nickname,
-      email: res.kakao_acount.email,
-      provider: 'kakao',
-      isLogin : true,
+      // email: res.kakao_acount.email,
+      provider: "kakao",
+      isLogin: true,
     });
     this.doSignUp();
   };
@@ -105,8 +84,8 @@ class LoginScreen extends Component {
       id: res.id,
       name: res.name,
       email: res.email,
-      provider: 'facebook',
-      isLogin : true,
+      provider: "facebook",
+      isLogin: true,
     });
     this.doSignUp();
   };
@@ -115,93 +94,104 @@ class LoginScreen extends Component {
   responseFacebookFail = (err) => {
     console.log(err);
   };
-  
+
   doSignUp = () => {
     const { id, name, provider, email, isLogin } = this.state;
-    window.sessionStorage.setItem('id', id);
-    window.sessionStorage.setItem('name', name);
-    window.sessionStorage.setItem('provider', provider);
-    window.sessionStorage.setItem('email', email);
-    window.sessionStorage.setItem('isLogin', isLogin);
+    window.sessionStorage.setItem("id", id);
+    window.sessionStorage.setItem("name", name);
+    window.sessionStorage.setItem("provider", provider);
+    window.sessionStorage.setItem("email", email);
+    window.sessionStorage.setItem("isLogin", isLogin);
     // this.props.onLogin();
-    this.props.history.push('/');
+    this.props.history.push("/");
   };
-
 
   render() {
     return (
       <Container>
         <LogoContainer>
-          <LogoBox/>
+          <LogoBox />
         </LogoContainer>
-        {/* <TextSNS>SNS로그인으로 간편하게</TextSNS> */}
-        {/* {this.state.isLogin && <Redirect to = "/home"/>} */}
-            
-        {this.state.isLogin ? 
-        // 로그인 전
-        <StartContainer>
-          <StartButton Enter href="./video">시작하기</StartButton>
-          <StartButton Make href="#">방만들기</StartButton>
-        </StartContainer> : 
-        
-        // 로그인 후
-        <LoginContainer>
-          <NaverLogin
-            clientId={naverID}
-            callbackUrl="http://localhost:3000/video"
-            // onSuccess={this.responseNaver}
-            onFailure={this.responseNaverFail}
-            render={props => (
-              <StyledContainer>
-                <StyledLogin Naver onClick={props.onClick}>Naver</StyledLogin>
-              </StyledContainer>
-            )}
-            
-          />
-          <GoogleLogin
-            clientId={googleID}
-            render={props => (
-              <StyledContainer>
-                <StyledLogin Google onClick={props.onClick}>Google</StyledLogin>
-              </StyledContainer>
-            )}
-            onSuccess={this.responseGoogle}
-            onFailure={this.responseGoogleFail}
-          />
-          
-          <WithRender></WithRender>
-          {/*           
-          <KakaoLogin
-            jsKey = {kakaoID}
-            onSuccess = {this.responseKakao}
-            onFail = {this.responseKakaoFail}
-            render={props => (
-              <StyledContainer>
-                <StyledLogin Kakao onClick={props.onClick}>Kakao</StyledLogin>
-              </StyledContainer>)}
-          /> */}
-          
-          <FacebookLogin
-            appId={facebookID}
-            onSuccess = {this.responseFacebook}
-            onFailure = {this.responseFacebookFail}
-            autoLoad={false}
-            fields="id,name,email"
-            render={props => (
-              <StyledContainer>
-                <StyledLogin Facebook onClick={props.onClick}>Facebook</StyledLogin>
-              </StyledContainer>)}
-          />  
-        </LoginContainer> }
+
+        {this.state.isLogin ? (
+          // 로그인 전
+          <StartContainer>
+            <StartButton Enter href='./video'>
+              시작하기
+            </StartButton>
+            <StartButton Make href='#'>
+              방만들기
+            </StartButton>
+          </StartContainer>
+        ) : (
+          // 로그인 후
+          <LoginContainer>
+            <NaverLogin
+              clientId={naverID}
+              callbackUrl='http://localhost:3000/video'
+              isPopup={false}
+              onSuccess={this.responseNaver}
+              onFailure={this.responseNaverFail}
+              render={(props) => (
+                <StyledContainer>
+                  <StyledLogin Naver onClick={props.onClick}>
+                    Naver
+                  </StyledLogin>
+                </StyledContainer>
+              )}
+            />
+            <GoogleLogin
+              clientId={googleID}
+              render={(props) => (
+                <StyledContainer>
+                  <StyledLogin Google onClick={props.onClick}>
+                    Google
+                  </StyledLogin>
+                </StyledContainer>
+              )}
+              onSuccess={this.responseGoogle}
+              onFailure={this.responseGoogleFail}
+            />
+
+            <KakaoLogin
+              token={kakaoID}
+              onSuccess={this.responseKakao}
+              onFail={this.responseKakaoFail}
+              getProfile={true}
+              render={(props) => (
+                <StyledContainer>
+                  <StyledLogin Kakao onClick={props.onClick}>
+                    Kakao
+                  </StyledLogin>
+                </StyledContainer>
+              )}
+            />
+
+            <FacebookLogin
+              appId={facebookID}
+              onSuccess={this.responseFacebook}
+              onFailure={this.responseFacebookFail}
+              autoLoad={false}
+              fields='id,name,email'
+              render={(props) => (
+                <StyledContainer>
+                  <StyledLogin Facebook onClick={props.onClick}>
+                    Facebook
+                  </StyledLogin>
+                </StyledContainer>
+              )}
+            />
+          </LoginContainer>
+        )}
       </Container>
     );
   }
 }
 
 const LogoContainer = styled.div`
-  display : flex;
-  justify-content : space-around;
-  padding : 100px 0 30px 0;
+  display: flex;
+  justify-content: space-around;
+  padding: 100px 0 30px 0;
 `;
 
 const LoginContainer = styled.div`
@@ -211,57 +201,77 @@ const LoginContainer = styled.div`
 `;
 
 const StyledLogin = styled.a`
-  width : 300px;
-  font-size : 24px;
-  text-align : center;
-  border-radius : 10px;
-  padding : 10px;
-  margin-bottom : 12px;
-  text-decoration:none;
-  background: ${props => { 
-      if(props.Naver) { return "#1ec800"}
-      else if(props.Google) {return "#FE2E2E"}
-      else if(props.Kakao) {return '#FFBF00'}
-      else if(props.Facebook) {return '#2E64FE'}
+  width: 300px;
+  font-size: 24px;
+  text-align: center;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 12px;
+  text-decoration: none;
+  background: ${(props) => {
+    if (props.Naver) {
+      return "#1ec800";
+    } else if (props.Google) {
+      return "#FE2E2E";
+    } else if (props.Kakao) {
+      return "#FFBF00";
+    } else if (props.Facebook) {
+      return "#2E64FE";
+    }
   }};
-  color:#fff; 
-  border-radius: 4px; 
-  font-weight:bold;
-  transition: all 0.2s; -webkit-transition: all 0.2s; -moz-transition: all 0.2s; -o-transition: all 0.2s;
+  color: #fff;
+  border-radius: 4px;
+  font-weight: bold;
+  transition: all 0.2s;
+  -webkit-transition: all 0.2s;
+  -moz-transition: all 0.2s;
+  -o-transition: all 0.2s;
 
-  &:hover{
-    background: ${props => { 
-      if(props.Naver) { return "#169600"}
-      else if(props.Google) {return "#c0392b"}
-      else if(props.Kakao) {return '#ce9700'}
-      else if(props.Facebook) {return '#1f4cc6'}
-  }}};
+  &:hover {
+    background: ${(props) => {
+      if (props.Naver) {
+        return "#169600";
+      } else if (props.Google) {
+        return "#c0392b";
+      } else if (props.Kakao) {
+        return "#ce9700";
+      } else if (props.Facebook) {
+        return "#1f4cc6";
+      }
+    }};
+  }
 `;
 
 const StyledContainer = styled.div`
-  display : flex;
-  justify-content : center; 
+  display: flex;
+  justify-content: center;
 `;
 
 const StartContainer = styled.div`
-  display : flex;
-  flex-direction : column;
-  align-items : center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const StartButton = styled.a`
-  width : 300px;
-  font-size : 24px;
-  text-align : center;
-  background-color : ${props => (props.Enter ? "#3498db" : "#bdc3c7")}; 
-  border-radius : 10px;
-  padding : 10px;
-  margin-bottom : 12px;
-  text-decoration:none;
-  border-radius: 4px; font-weight:bold; color:#fff; transition: all 0.2s; -webkit-transition: all 0.2s; -moz-transition: all 0.2s; -o-transition: all 0.2s;
+  width: 300px;
+  font-size: 24px;
+  text-align: center;
+  background-color: ${(props) => (props.Enter ? "#3498db" : "#bdc3c7")};
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 12px;
+  text-decoration: none;
+  border-radius: 4px;
+  font-weight: bold;
+  color: #fff;
+  transition: all 0.2s;
+  -webkit-transition: all 0.2s;
+  -moz-transition: all 0.2s;
+  -o-transition: all 0.2s;
 
-  &:hover{
-    background-color : ${props => (props.Enter ? "#2980b9" : "#7f8c8d")};
+  &:hover {
+    background-color: ${(props) => (props.Enter ? "#2980b9" : "#7f8c8d")};
   }
 `;
 
