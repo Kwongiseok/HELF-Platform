@@ -13,6 +13,28 @@ const naverID = "oHvHR1J4ah36qMMt19YX";
 const kakaoID = "d1ff7d6c9ce92ba437a95f277ad4a992";
 const facebookID = "567205533996340";
 
+const WithRender = () => (
+  <KakaoLogin
+    token={kakaoID}
+    onSuccess={console.log}
+    onFail={console.error}
+    onLogout={console.info}
+    render={({ onClick }) => {
+      return (
+        <a
+          href="http://www.naver.com"
+          onClick={(e) => {
+            e.preventDefault();
+            onClick();
+          }}
+        >
+          카카오로 로그인하기
+        </a>
+      );
+    }}
+  />
+);
+
 class LoginScreen extends Component {
   constructor(props) {
     super(props);
@@ -69,7 +91,6 @@ class LoginScreen extends Component {
       provider: 'kakao',
       isLogin : true,
     });
-    console.log(res.profile.id);
     this.doSignUp();
   };
 
@@ -94,7 +115,7 @@ class LoginScreen extends Component {
   responseFacebookFail = (err) => {
     console.log(err);
   };
-
+  
   doSignUp = () => {
     const { id, name, provider, email, isLogin } = this.state;
     window.sessionStorage.setItem('id', id);
@@ -127,14 +148,15 @@ class LoginScreen extends Component {
         <LoginContainer>
           <NaverLogin
             clientId={naverID}
-            callbackUrl="http://localhost:3000/"
+            callbackUrl="http://localhost:3000/video"
+            // onSuccess={this.responseNaver}
+            onFailure={this.responseNaverFail}
             render={props => (
               <StyledContainer>
                 <StyledLogin Naver onClick={props.onClick}>Naver</StyledLogin>
               </StyledContainer>
-            )}onSuccess={this.responseNaver}
-            onFailure={this.responseNaverFail}
-
+            )}
+            
           />
           <GoogleLogin
             clientId={googleID}
@@ -146,15 +168,19 @@ class LoginScreen extends Component {
             onSuccess={this.responseGoogle}
             onFailure={this.responseGoogleFail}
           />
+          
+          <WithRender></WithRender>
+          {/*           
           <KakaoLogin
             jsKey = {kakaoID}
-            onSuccess = {this.responseKako}
+            onSuccess = {this.responseKakao}
             onFail = {this.responseKakaoFail}
             render={props => (
               <StyledContainer>
                 <StyledLogin Kakao onClick={props.onClick}>Kakao</StyledLogin>
               </StyledContainer>)}
-          />
+          /> */}
+          
           <FacebookLogin
             appId={facebookID}
             onSuccess = {this.responseFacebook}
@@ -171,12 +197,6 @@ class LoginScreen extends Component {
     );
   }
 }
-
-// const TextSNS = styled.div`
-//   font-size: 12px;
-//   text-align : center;
-//   padding : 4px 0 12px 0;
-// `;
 
 const LogoContainer = styled.div`
   display : flex;
@@ -220,7 +240,7 @@ const StyledLogin = styled.a`
 
 const StyledContainer = styled.div`
   display : flex;
-  justify-content : center;
+  justify-content : center; 
 `;
 
 const StartContainer = styled.div`

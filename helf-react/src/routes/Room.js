@@ -36,6 +36,7 @@ const Room = (props) => {
             <div className = "Webcam">
                 <StyledVideo playsInline autoPlay ref={webcamRef} onClick = {(e) => {ZoomVideo(e)}} />
                 <canvas ref = {canvasRef} />
+                <NameTag>{window.sessionStorage.name}</NameTag>
             </div>
             );
     } 
@@ -82,7 +83,7 @@ const Room = (props) => {
             detect(net)
         },100);
     }
-    runPosenet();
+    // runPosenet();
     useEffect(() => {
         socketRef.current = io.connect("https://helf-node.herokuapp.com/");
         navigator.mediaDevices.getUserMedia({ video: videoConstraints, audio: true }).then(stream => {
@@ -149,38 +150,14 @@ const Room = (props) => {
         return peer;
     }
 
-    return (
+    return (        
         <Container>
-            <GlobalStyle/>
-            <div id = "Host" >
-            <StyledVideo id = "parent" muted ref={userVideo} autoPlay playsInline onClick = {(e) => {console.log(e)}}
-         style={{
-            position: "absolute",
-            marginLeft: "auto",
-            marginRight: "auto",
-            left: 0,
-            right: 0,
-            textAlign: "center",
-            zindex: 9,
-            width: 640,
-            height: 480,
-          }} />
-            <canvas
-          ref={canvasRef}
-          style={{
-            position: "absolute",
-            marginLeft: "auto",
-            marginRight: "auto",
-            left: 0,
-            right: 0,
-            textAlign: "center",
-            zindex: 9,
-            width: 640,
-            height: 480,
-          }}
-        />
-    </div>
-            {/* <NameTag></NameTag> */}
+        <GlobalStyle/>
+            <VideoWindow>
+                <StyledVideo id = "parent" muted ref={userVideo} autoPlay playsInline onClick = {(e) => {console.log(e)}}/>
+                <Canvas ref={canvasRef}/>
+                <NameTag>{window.sessionStorage.name}</NameTag>    
+            </VideoWindow>
             {peers.map((peer, index) => {
                 return (
                     <Video key={index} peer={peer}/>
@@ -207,11 +184,43 @@ const Container = styled.div`
     flex-wrap : wrap;
 `;
 
-
-const StyledVideo = styled.video`
-    height: 50%;
-    width: 50%;
+const VideoWindow = styled.div`
+    display : flex;
+    flex-direction : column;
+    
 `;
 
+const StyledVideo = styled.video`
+    /* height: 50%;
+    width: 50%; */
+            
+    // position: "absolute",
+    // marginLeft: "auto",
+    // marginRight: "auto",
+    // left: 0,
+    // right: 0,
+    // textAlign: "center",
+    // zindex: 9,
+    // width: 640,
+    // height: 480,
+`;
+
+const Canvas = styled.div`
+    position: "absolute",
+    margin-left: "auto",
+    margin-right: "auto",
+    left: 0,
+    right: 0,
+    text-align: "center",
+    zindex: 9,
+    width: 640,
+    height: 480,
+`;
+
+const NameTag = styled.h1`
+    text-align:center;
+    color : white;
+    font-size : 20px;   
+`;
 
 export default Room;
