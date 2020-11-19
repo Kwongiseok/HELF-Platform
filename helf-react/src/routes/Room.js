@@ -29,18 +29,11 @@ const Room = (props) => {
         }, []);
     
         return (
-<<<<<<< HEAD
-            // <div className = "Webcam">
-                <StyledVideo playsInline autoPlay ref={webcamRef} onClick = {(e) => {}} />
-                // <canvas ref = {canvasRef} />
-            // </div>
-=======
             <div className = "Webcam">
-                <StyledVideo playsInline autoPlay ref={webcamRef} onClick = {(e) => {ZoomVideo(e)}} />
+                <StyledVideo playsInline autoPlay ref={webcamRef} onClick = {(e) => {}} />
                 <canvas ref = {canvasRef} />
                 <NameTag>{window.sessionStorage.name}</NameTag>
             </div>
->>>>>>> 8d4e30be3a9d51b128c490d5fc6ec3a82e16553f
             );
     } 
     /* room */
@@ -166,47 +159,12 @@ const Room = (props) => {
 
     return (        
         <Container>
-<<<<<<< HEAD
-            {/* <button onClick={runPosenet}>Motion Detection</button> */}
-            <GlobalStyle/>
-        {/* <div id = "Host" > */}
-            <StyledVideo id = "parent" muted ref={userVideo} autoPlay playsInline onClick = {(e) => {console.log(e)}}
-        //  style={{
-        //     position: "absolute",
-        //     marginLeft: "auto",
-        //     marginRight: "auto",
-        //     left: 0,
-        //     right: 0,
-        //     textAlign: "center",
-        //     zindex: 9,
-        //     width: 640,
-        //     height: 480,
-        //   }} 
-            />
-            {/* <canvas
-          ref={canvasRef}
-          style={{
-            position: "absolute",
-            marginLeft: "auto",
-            marginRight: "auto",
-            left: 0,
-            right: 0,
-            textAlign: "center",
-            zindex: 9,
-            width: 640,
-            height: 480,
-          }}
-        /> */}
-    {/* </div> */}
-            {/* <NameTag></NameTag> */}
-=======
         <GlobalStyle/>
             <VideoWindow>
                 <StyledVideo id = "parent" muted ref={userVideo} autoPlay playsInline onClick = {(e) => {console.log(e)}}/>
                 <Canvas ref={canvasRef}/>
                 <NameTag>{window.sessionStorage.name}</NameTag>    
             </VideoWindow>
->>>>>>> 8d4e30be3a9d51b128c490d5fc6ec3a82e16553f
             {peers.map((peer, index) => {
                 return (
                     <Video key={index} peer={peer}/>

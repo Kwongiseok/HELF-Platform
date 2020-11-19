@@ -4,17 +4,10 @@ import NaverLogin from "react-login-by-naver";
 // import NaverLogin from "@dohyeon/react-naver-login";
 import KakaoLogin from "react-kakao-login";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
-<<<<<<< HEAD
-import styled from 'styled-components';
-import { Redirect, withRouter } from 'react-router-dom';
-import LogoBox from "../Components/LogoBox"
-import axios from 'axios';
-=======
 import styled from "styled-components";
 import { Redirect, withRouter } from "react-router-dom";
 import LogoBox from "../Components/LogoBox";
->>>>>>> 8d4e30be3a9d51b128c490d5fc6ec3a82e16553f
-
+import axios from 'axios';
 //Login Cient IDs
 const googleID =
   "170179425708-lu3v7mptq4jn95giek3kbv845eov647l.apps.googleusercontent.com";
@@ -44,7 +37,6 @@ class LoginScreen extends Component {
       isLogin: true,
     });
     this.doSignUp();
-<<<<<<< HEAD
     const client = axios.create();
     let name_post = this.state.name;
     let email_post = this.state.email;
@@ -64,8 +56,6 @@ class LoginScreen extends Component {
     //   throw new Error(error);
     // })
     
-=======
->>>>>>> 8d4e30be3a9d51b128c490d5fc6ec3a82e16553f
   };
 
   //Google Login Fail
@@ -142,40 +132,6 @@ class LoginScreen extends Component {
           <LogoBox />
         </LogoContainer>
 
-<<<<<<< HEAD
-          />
-          <GoogleLogin
-            clientId={googleID}
-            render={props => (
-              <StyledContainer>
-                <StyledLogin Google onClick={props.onClick} >Google</StyledLogin>
-              </StyledContainer>
-            )}
-            onSuccess={this.responseGoogle}
-            onFailure={this.responseGoogleFail}
-          />
-          <KakaoLogin
-            jsKey = {kakaoID}
-            onSuccess = {this.responseKako}
-            onFail = {this.responseKakaoFail}
-            render={props => (
-              <StyledContainer>
-                <StyledLogin Kakao onClick={props.onClick}>Kakao</StyledLogin>
-              </StyledContainer>)}
-          />
-          <FacebookLogin
-            appId={facebookID}
-            onSuccess = {this.responseFacebook}
-            onFailure = {this.responseFacebookFail}
-            autoLoad={false}
-            fields="id,name,email"
-            render={props => (
-              <StyledContainer>
-                <StyledLogin Facebook onClick={props.onClick}>Facebook</StyledLogin>
-              </StyledContainer>)}
-          />  
-        </LoginContainer> }
-=======
         {this.state.isLogin ? (
           // 로그인 전
           <StartContainer>
@@ -246,7 +202,6 @@ class LoginScreen extends Component {
             />
           </LoginContainer>
         )}
->>>>>>> 8d4e30be3a9d51b128c490d5fc6ec3a82e16553f
       </Container>
     );
   }
@@ -265,25 +220,6 @@ const LoginContainer = styled.div`
 `;
 
 const StyledLogin = styled.a`
-<<<<<<< HEAD
-  width : 300px;
-  font-size : 24px;
-  text-align : center;
-  border-radius : 10px;
-  padding : 10px;
-  :hover {
-    cursor: pointer;
-    transform : scale(1.05);
-    transition : 300ms;
-  }
-  margin-bottom : 12px;
-  text-decoration:none;
-  background: ${props => { 
-      if(props.Naver) { return "#1ec800"}
-      else if(props.Google) {return "#FE2E2E"}
-      else if(props.Kakao) {return '#FFBF00'}
-      else if(props.Facebook) {return '#2E64FE'}
-=======
   width: 300px;
   font-size: 24px;
   text-align: center;
@@ -301,7 +237,6 @@ const StyledLogin = styled.a`
     } else if (props.Facebook) {
       return "#2E64FE";
     }
->>>>>>> 8d4e30be3a9d51b128c490d5fc6ec3a82e16553f
   }};
   color: #fff;
   border-radius: 4px;
@@ -311,15 +246,6 @@ const StyledLogin = styled.a`
   -moz-transition: all 0.2s;
   -o-transition: all 0.2s;
 
-<<<<<<< HEAD
-  &:hover{
-    background: ${props => { 
-      // if(props.Naver) { return "#169600"}
-      // else if(props.Google) {return "#c0392b"}
-      // else if(props.Kakao) {return '#ce9700'}
-      // else if(props.Facebook) {return '#1f4cc6'}
-  }}};
-=======
   &:hover {
     background: ${(props) => {
       if (props.Naver) {
@@ -333,7 +259,6 @@ const StyledLogin = styled.a`
       }
     }};
   }
->>>>>>> 8d4e30be3a9d51b128c490d5fc6ec3a82e16553f
 `;
 
 const StyledContainer = styled.div`
@@ -348,22 +273,6 @@ const StartContainer = styled.div`
 `;
 
 const StartButton = styled.a`
-<<<<<<< HEAD
-  width : 300px;
-  font-size : 24px;
-  :hover {
-    cursor: pointer;
-    transform : scale(1.05);
-    transition : 300ms;
-  }
-  text-align : center;
-  background-color : ${props => (props.Enter ? "#3498db" : "#bdc3c7")}; 
-  border-radius : 10px;
-  padding : 10px;
-  margin-bottom : 12px;
-  text-decoration:none;
-  border-radius: 4px; font-weight:bold; color:#fff; transition: all 0.2s; -webkit-transition: all 0.2s; -moz-transition: all 0.2s; -o-transition: all 0.2s;
-=======
   width: 300px;
   font-size: 24px;
   text-align: center;
@@ -379,7 +288,6 @@ const StartButton = styled.a`
   -webkit-transition: all 0.2s;
   -moz-transition: all 0.2s;
   -o-transition: all 0.2s;
->>>>>>> 8d4e30be3a9d51b128c490d5fc6ec3a82e16553f
 
   &:hover {
     background-color: ${(props) => (props.Enter ? "#2980b9" : "#7f8c8d")};
