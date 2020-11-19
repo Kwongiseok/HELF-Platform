@@ -5,7 +5,7 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "start": "nodemon server.js"
   },
   "keywords": [],
   "author": "",
@@ -19,7 +19,7 @@
     "heroku": "^7.47.0",
     "io": "^1.0.3",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.10.12",
+    "mongoose": "^5.10.13",
     "nodeman": "1.1.2",
     "openssl": "^1.1.0",
     "peer": "^0.5.3",

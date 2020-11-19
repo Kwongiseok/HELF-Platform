@@ -3,22 +3,29 @@ const express = require("express");
 const http = require("http");
 const app = express();
 const cors = require('cors');
+const authRouter = require('./routes/auth');
+const bodyParser = require('body-parser');
 app.use(cors());
-
-// const server = http.createServer(app);
+app.use(bodyParser.json());
+app.use('/api', authRouter);
+const server = http.createServer(app);
 const port = 5000;
-const server = app.listen(process.env.PORT || port, () => console.log('server is running'));
+// const server = app.listen(process.env.PORT || port, () => console.log('server is running'));
 const socket = require("socket.io");
 const io = socket(server);
 const mongoose = require('mongoose');
 const users = {};
 const socketToRoom = {};
 
-
-
+// app.post('/api', async (req,res) => {
+//     let name = req.body.name_post;
+//     console.log(name);
+//     res.send();
+// })
 
 io.on('connection', socket => {
     socket.on("join room", roomID => {
+        // socket.join(roomID);
         if (users[roomID]) {
             const length = users[roomID].length;
             if (length === 4) {
@@ -31,7 +38,6 @@ io.on('connection', socket => {
         }
         socketToRoom[socket.id] = roomID;
         const usersInThisRoom = users[roomID].filter(id => id !== socket.id);
-
         socket.emit("all users", usersInThisRoom);
     });
 
@@ -54,28 +60,15 @@ io.on('connection', socket => {
 
 });
 
-// mongoose
-//   .connect(
-//     'mongodb+srv://KwonGiseok:gab4r2K5fao0hxMx@cluster0.1fcgr.gcp.mongodb.net/HealthFriend?retryWrites=true&w=majority',
-//     { useNewUrlParser: true, useUnifiedTopology: true }
-//   )
-//   .then(() => {
-//     server.listen(process.env.PORT || port, () => console.log('server is running'));
-//   })
-//   .catch((err) => console.log(err));
+mongoose
+  .connect(
+    'mongodb+srv://KwonGiseok:gab4r2K5fao0hxMx@cluster0.1fcgr.gcp.mongodb.net/HealthFriend?retryWrites=true&w=majority',
+    { useNewUrlParser: true, useUnifiedTopology: true }
+  )
+  .then(() => {
+    server.listen(process.env.PORT || port, () => console.log(`server is running ${process.env.PORT}` ));
+  })
+  .catch((err) => console.log(err));
 
-<<<<<<< HEAD
-// mongoose
-//   .connect(
-//     'mongodb+srv://KwonGiseok:gab4r2K5fao0hxMx@cluster0.1fcgr.gcp.mongodb.net/HealthFriend?retryWrites=true&w=majority',
-//     { useNewUrlParser: true, useUnifiedTopology: true }
-//   )
-//   .then(() => {
-//     server.listen(process.env.PORT || port, () => console.log('server is running'));
-//   })
-//   .catch((err) => console.log(err));
 
-=======
->>>>>>> 9e3eae97ed6516ebde004d1597ff8941a6289ff8
-
-server.listen(process.env.PORT || port, () => console.log('server is running'));
+// server.listen(process.env.PORT || port, () => console.log('server is running'));

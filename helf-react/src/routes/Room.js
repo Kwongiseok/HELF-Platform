@@ -8,17 +8,13 @@ import { drawKeypoints, drawSkeleton } from "../utilities";
 import * as tf from "@tensorflow/tfjs";
 import * as posenet from "@tensorflow-models/posenet";
 
-function ZoomVideo(video){
-    // // console.log(video);
-    // console.log(video.current.clientHeight)
-}
 
 const videoConstraints = {
 
-    height : 300,
-    width : 300
-    // height: window.innerHeight / 2,
-    // width: window.innerWidth / 2
+    // height : 300,
+    // width : 300
+    height: window.innerHeight / 2,
+    width: window.innerWidth / 2
 }
 
 const Room = (props) => {
@@ -33,10 +29,10 @@ const Room = (props) => {
         }, []);
     
         return (
-            <div className = "Webcam">
-                <StyledVideo playsInline autoPlay ref={webcamRef} onClick = {(e) => {ZoomVideo(e)}} />
-                <canvas ref = {canvasRef} />
-            </div>
+            // <div className = "Webcam">
+                <StyledVideo playsInline autoPlay ref={webcamRef} onClick = {(e) => {}} />
+                // <canvas ref = {canvasRef} />
+            // </div>
             );
     } 
     /* room */
@@ -61,7 +57,7 @@ const Room = (props) => {
             const pose = await net.estimateSinglePose(video);
             console.log(pose);
 
-            drawCanvas(pose, video, videoWidth, videoHeight, canvasRef);
+            // drawCanvas(pose, video, videoWidth, videoHeight, canvasRef);
 
         }
     }
@@ -82,9 +78,11 @@ const Room = (props) => {
             detect(net)
         },100);
     }
-    runPosenet();
+    // runPosenet();
     useEffect(() => {
-        socketRef.current = io.connect("https://helf-node.herokuapp.com/");
+        // socketRef.current = io.connect("https://helf-node.herokuapp.com/");
+        socketRef.current = io.connect("http://localhost:5000/");
+
         navigator.mediaDevices.getUserMedia({ video: videoConstraints, audio: true }).then(stream => {
             userVideo.current.srcObject = stream;
             socketRef.current.emit("join room", roomID);
@@ -99,7 +97,6 @@ const Room = (props) => {
                     peers.push(peer);
                 })
                 setPeers(peers);
-
             })
 
             socketRef.current.on("user joined", payload => {
@@ -116,6 +113,16 @@ const Room = (props) => {
                 const item = peersRef.current.find(p => p.peerID === payload.id);
                 item.peer.signal(payload.signal);
             });
+            socketRef.current.on('user-disconnected', (payload) => {
+                const item = peersRef.current.find((p) => p.peerId === payload);
+                if (item) {
+                  item.peer.destroy();
+                  peersRef.current = peersRef.current.filter(
+                    (p) => p.peerId !== payload
+                  );
+                }
+                setPeers((users) => users.filter((p) => p.peerId !== payload));
+              });
         })
     }, []);
 
@@ -151,21 +158,23 @@ const Room = (props) => {
 
     return (
         <Container>
+            {/* <button onClick={runPosenet}>Motion Detection</button> */}
             <GlobalStyle/>
-            <div id = "Host" >
+        {/* <div id = "Host" > */}
             <StyledVideo id = "parent" muted ref={userVideo} autoPlay playsInline onClick = {(e) => {console.log(e)}}
-         style={{
-            position: "absolute",
-            marginLeft: "auto",
-            marginRight: "auto",
-            left: 0,
-            right: 0,
-            textAlign: "center",
-            zindex: 9,
-            width: 640,
-            height: 480,
-          }} />
-            <canvas
+        //  style={{
+        //     position: "absolute",
+        //     marginLeft: "auto",
+        //     marginRight: "auto",
+        //     left: 0,
+        //     right: 0,
+        //     textAlign: "center",
+        //     zindex: 9,
+        //     width: 640,
+        //     height: 480,
+        //   }} 
+            />
+            {/* <canvas
           ref={canvasRef}
           style={{
             position: "absolute",
@@ -178,8 +187,8 @@ const Room = (props) => {
             width: 640,
             height: 480,
           }}
-        />
-    </div>
+        /> */}
+    {/* </div> */}
             {/* <NameTag></NameTag> */}
             {peers.map((peer, index) => {
                 return (

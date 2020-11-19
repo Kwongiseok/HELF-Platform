@@ -6,6 +6,7 @@ import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props
 import styled from 'styled-components';
 import { Redirect, withRouter } from 'react-router-dom';
 import LogoBox from "../Components/LogoBox"
+import axios from 'axios';
 
 //Login Cient IDs
 const googleID ='170179425708-lu3v7mptq4jn95giek3kbv845eov647l.apps.googleusercontent.com';
@@ -35,6 +36,24 @@ class LoginScreen extends Component {
       isLogin : true,
     });
     this.doSignUp();
+    const client = axios.create();
+    let name_post = this.state.name;
+    let email_post = this.state.email;
+    console.log(name_post);
+    client.post('/api',{name_post, email_post});
+    // axios.request({
+    //   method : "POST",
+    //   url : "http://localhost:5000/api/",
+    //   data : {
+    //     "name" : this.state.name,
+    //     "email" : this.state.email
+    //   }
+    // }).then((res)=> {
+    //   console.log(res)
+    // }).catch(error => {
+    //   console.log(error);
+    //   throw new Error(error);
+    // })
     
   };
 
@@ -140,7 +159,7 @@ class LoginScreen extends Component {
             clientId={googleID}
             render={props => (
               <StyledContainer>
-                <StyledLogin Google onClick={props.onClick}>Google</StyledLogin>
+                <StyledLogin Google onClick={props.onClick} >Google</StyledLogin>
               </StyledContainer>
             )}
             onSuccess={this.responseGoogle}
@@ -196,6 +215,11 @@ const StyledLogin = styled.a`
   text-align : center;
   border-radius : 10px;
   padding : 10px;
+  :hover {
+    cursor: pointer;
+    transform : scale(1.05);
+    transition : 300ms;
+  }
   margin-bottom : 12px;
   text-decoration:none;
   background: ${props => { 
@@ -211,10 +235,10 @@ const StyledLogin = styled.a`
 
   &:hover{
     background: ${props => { 
-      if(props.Naver) { return "#169600"}
-      else if(props.Google) {return "#c0392b"}
-      else if(props.Kakao) {return '#ce9700'}
-      else if(props.Facebook) {return '#1f4cc6'}
+      // if(props.Naver) { return "#169600"}
+      // else if(props.Google) {return "#c0392b"}
+      // else if(props.Kakao) {return '#ce9700'}
+      // else if(props.Facebook) {return '#1f4cc6'}
   }}};
 `;
 
@@ -232,6 +256,11 @@ const StartContainer = styled.div`
 const StartButton = styled.a`
   width : 300px;
   font-size : 24px;
+  :hover {
+    cursor: pointer;
+    transform : scale(1.05);
+    transition : 300ms;
+  }
   text-align : center;
   background-color : ${props => (props.Enter ? "#3498db" : "#bdc3c7")}; 
   border-radius : 10px;
