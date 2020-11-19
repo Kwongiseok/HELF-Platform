@@ -66,7 +66,11 @@ mongoose
     { useNewUrlParser: true, useUnifiedTopology: true }
   )
   .then(() => {
+<<<<<<< HEAD
     server.listen(process.env.PORT || port, () => console.log(`server is running ${process.env.PORT}` ));
+=======
+    server.listen(process.env.PORT || port, () => console.log('server is running'));
+>>>>>>> 8d4e30be3a9d51b128c490d5fc6ec3a82e16553f
   })
   .catch((err) => console.log(err));
 
