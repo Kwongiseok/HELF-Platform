@@ -8,6 +8,7 @@ import { BrowserRouter, Route, Link , Switch } from "react-router-dom";
 import CreateRoom from "./routes/CreateRoom";
 import Room from "./routes/Room";
 import withLogin from './Components/LoginHOC'; // 로그인 했을 때만 보여짐
+import roomListScreen from './screens/RoomListScreen';
 // function App() {
 //   return (
 //     <LoginScreen/>
@@ -63,6 +64,7 @@ class App extends Component {
             <Route path="/video"  component={CreateRoom} />
             <Route path="/room/:roomID" component={Room} />
             <Route path="/home" component={HomeScreen} />
+            <Route path="/roomList" component={roomListScreen} />
           </Switch>
         </BrowserRouter>
       </Store.Provider>

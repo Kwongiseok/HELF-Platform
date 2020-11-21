@@ -29,11 +29,11 @@ const Room = (props) => {
         }, []);
     
         return (
-            <div className = "Webcam">
+            //<div className = "Webcam">
                 <StyledVideo playsInline autoPlay ref={webcamRef} onClick = {(e) => {}} />
-                <canvas ref = {canvasRef} />
-                <NameTag>{window.sessionStorage.name}</NameTag>
-            </div>
+            //    <canvas ref = {canvasRef} />
+            //    <NameTag>{window.sessionStorage.name}</NameTag>
+            //</div>
             );
     } 
     /* room */
@@ -42,6 +42,8 @@ const Room = (props) => {
     const userVideo = useRef();
     const peersRef = useRef([]);
     const roomID = props.match.params.roomID;
+
+    const roomName = "방1";
 
     const detect = async (net) => {
         if(typeof userVideo !== "undefined" && typeof userVideo.current !== "undefined" && userVideo.current !== null &&
@@ -86,7 +88,7 @@ const Room = (props) => {
 
         navigator.mediaDevices.getUserMedia({ video: videoConstraints, audio: true }).then(stream => {
             userVideo.current.srcObject = stream;
-            socketRef.current.emit("join room", roomID);
+            socketRef.current.emit("join room", {roomID,roomName});
             socketRef.current.on("all users", users => {
                 const peers = [];
                 users.forEach(userID => {
@@ -162,8 +164,8 @@ const Room = (props) => {
         <GlobalStyle/>
             <VideoWindow>
                 <StyledVideo id = "parent" muted ref={userVideo} autoPlay playsInline onClick = {(e) => {console.log(e)}}/>
-                <Canvas ref={canvasRef}/>
-                <NameTag>{window.sessionStorage.name}</NameTag>    
+                {/* <Canvas ref={canvasRef}/>
+                <NameTag>{window.sessionStorage.name}</NameTag>     */}
             </VideoWindow>
             {peers.map((peer, index) => {
                 return (
@@ -198,8 +200,8 @@ const VideoWindow = styled.div`
 `;
 
 const StyledVideo = styled.video`
-    /* height: 50%;
-    width: 50%; */
+    height: 50%;
+    width: 50%; 
             
     // position: "absolute",
     // marginLeft: "auto",

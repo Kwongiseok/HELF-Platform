@@ -16,16 +16,26 @@ const io = socket(server);
 const mongoose = require('mongoose');
 const users = {};
 const socketToRoom = {};
-
+const rooms = [];
 // app.post('/api', async (req,res) => {
 //     let name = req.body.name_post;
 //     console.log(name);
 //     res.send();
 // })
-
+app.get('/api/roomList' , async(req,res) => {
+    // const names = Object.values(rooms);
+    // const listItem = names.map((name)=> <li>{name}</li>);
+    res.send(rooms);
+})
 io.on('connection', socket => {
-    socket.on("join room", roomID => {
+    socket.on("join room", (obj) => {
         // socket.join(roomID);
+        //rooms.push(roomName);
+        // console.log(roomName);
+        const roomID = obj['roomID'];
+        const roomName = obj['roomName'];
+        rooms.push(roomName);
+        console.log(rooms);
         if (users[roomID]) {
             const length = users[roomID].length;
             if (length === 4) {
