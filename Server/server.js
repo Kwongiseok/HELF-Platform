@@ -19,10 +19,12 @@ const users = {};
 const socketToRoom = {};
 let rooms = [];
 let roomIDs = new Map();
+let roomGets = [];
 
 app.get('/api/roomList' , async(req,res) => {
-    res.send(rooms);
+    res.send({roomGets,rooms});
 })
+
 io.on('connection', socket => {
     socket.on("join room", (obj) => {
         const roomID = obj['roomID'];
@@ -38,8 +40,10 @@ io.on('connection', socket => {
             users[roomID].push(socket.id);
         } else {
             users[roomID] = [socket.id];
+            roomGets.push(roomID);
             rooms.push(roomName);
             roomIDs.set(roomID,roomName);
+            console.log(roomGets);
         }
         socketToRoom[socket.id] = roomID;
         const usersInThisRoom = users[roomID].filter(id => id !== socket.id);
@@ -60,10 +64,10 @@ io.on('connection', socket => {
         if (room) {
             room = room.filter(id => id !== socket.id);
             users[roomID] = room;
-            
+
         }
         if (room.length < 1) {
-            const roomname_tmp = roomIDs.get(roomID);
+            const roomname_tmp = roomIDs.get(roomID); // roomName 검색
             const rooms_tmp = rooms.filter(roomName => roomName !== roomname_tmp);
             rooms = rooms_tmp;
         }

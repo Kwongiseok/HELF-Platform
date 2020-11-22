@@ -14,14 +14,13 @@ class RoomListScreen extends Component {
     const server = axios.create();
     server.get('/api/roomList')
     .then((res)=> {
-        const names = Object.values(res.data);
+        console.log(res);
+        console.log(res.data.roomGets);
+        const names = Object.values(res.data.rooms);
         this.setState({
             loading : true,
             listItem : names,
-        })
-        // const listItem = names.map((name) => <li>{name}</li>);
-        // console.log(listItem);
-        // return (<ul>{listItem}</ul>);
+            })
         })
     };
     componentDidMount() {
