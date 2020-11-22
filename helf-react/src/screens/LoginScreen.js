@@ -7,7 +7,7 @@ import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props
 import styled from "styled-components";
 import { Redirect, withRouter } from "react-router-dom";
 import LogoBox from "../Components/LogoBox";
-import axios from 'axios';
+import axios from "axios";
 //Login Cient IDs
 const googleID =
   "170179425708-lu3v7mptq4jn95giek3kbv845eov647l.apps.googleusercontent.com";
@@ -41,7 +41,7 @@ class LoginScreen extends Component {
     let name_post = this.state.name;
     let email_post = this.state.email;
     console.log(name_post);
-    client.post('/api',{name_post, email_post});
+    client.post("/api", { name_post, email_post });
     // axios.request({
     //   method : "POST",
     //   url : "http://localhost:5000/api/",
@@ -55,7 +55,6 @@ class LoginScreen extends Component {
     //   console.log(error);
     //   throw new Error(error);
     // })
-    
   };
 
   //Google Login Fail
@@ -132,13 +131,16 @@ class LoginScreen extends Component {
           <LogoBox />
         </LogoContainer>
 
+        {/* 시작하기 -> RoomListScreen 
+          방만들기 -> RoomMakeScreen 으로 수정해야함*/}
+
         {this.state.isLogin ? (
           // 로그인 전
           <StartContainer>
             <StartButton Enter href='./video'>
               시작하기
             </StartButton>
-            <StartButton Make href='#'>
+            <StartButton Make href='./roomMake'>
               방만들기
             </StartButton>
           </StartContainer>
