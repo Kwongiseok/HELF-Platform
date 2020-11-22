@@ -14,18 +14,21 @@ const port = 5000;
 const socket = require("socket.io");
 const io = socket(server);
 const mongoose = require('mongoose');
+const { mapReduce } = require('./models/User');
 const users = {};
 const socketToRoom = {};
+let rooms = [];
+let roomIDs = new Map();
 
-// app.post('/api', async (req,res) => {
-//     let name = req.body.name_post;
-//     console.log(name);
-//     res.send();
-// })
-
+app.get('/api/roomList' , async(req,res) => {
+    res.send(rooms);
+})
 io.on('connection', socket => {
-    socket.on("join room", roomID => {
-        // socket.join(roomID);
+    socket.on("join room", (obj) => {
+        const roomID = obj['roomID'];
+        const roomName = obj['roomName'];
+        // 중복되는 방제목 오면 예외처리 구현 예정
+        
         if (users[roomID]) {
             const length = users[roomID].length;
             if (length === 4) {
@@ -35,6 +38,8 @@ io.on('connection', socket => {
             users[roomID].push(socket.id);
         } else {
             users[roomID] = [socket.id];
+            rooms.push(roomName);
+            roomIDs.set(roomID,roomName);
         }
         socketToRoom[socket.id] = roomID;
         const usersInThisRoom = users[roomID].filter(id => id !== socket.id);
@@ -55,6 +60,12 @@ io.on('connection', socket => {
         if (room) {
             room = room.filter(id => id !== socket.id);
             users[roomID] = room;
+            
+        }
+        if (room.length < 1) {
+            const roomname_tmp = roomIDs.get(roomID);
+            const rooms_tmp = rooms.filter(roomName => roomName !== roomname_tmp);
+            rooms = rooms_tmp;
         }
     });
 
@@ -69,6 +80,3 @@ mongoose
     server.listen(process.env.PORT || port, () => console.log('server is running'));
   })
   .catch((err) => console.log(err));
-
-
-// server.listen(process.env.PORT || port, () => console.log('server is running'));

@@ -2,15 +2,9 @@ const express = require('express');
 const User = require('../models/User');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
+const { rooms } = require('../server');
 
-router.get('/' , async(req,res)=> {
-  res.send("HI")
-})
-// router.post('/', async(req,res)=> {
-//   console.log(req.body.name_post);
-//   console.log(req.body.email_post);
-//   res.send()
-// })
+
 
 router.post('/', async (req, res) => {
   //check if mail exist

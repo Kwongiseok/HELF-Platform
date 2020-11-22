@@ -27,11 +27,11 @@ const Room = (props) => {
     }, []);
 
     return (
-      <div className='Webcam'>
-        <StyledVideo playsInline autoPlay ref={webcamRef} onClick={(e) => {}} />
-        <canvas ref={canvasRef} />
-        <NameTag>{window.sessionStorage.name}</NameTag>
-      </div>
+      //<div className = "Webcam">
+      <StyledVideo playsInline autoPlay ref={webcamRef} onClick={(e) => {}} />
+      //    <canvas ref = {canvasRef} />
+      //    <NameTag>{window.sessionStorage.name}</NameTag>
+      //</div>
     );
   };
   /* room */
@@ -40,6 +40,8 @@ const Room = (props) => {
   const userVideo = useRef();
   const peersRef = useRef([]);
   const roomID = props.match.params.roomID;
+
+  const roomName = "방1";
 
   const detect = async (net) => {
     if (
@@ -88,7 +90,7 @@ const Room = (props) => {
       .getUserMedia({ video: videoConstraints, audio: true })
       .then((stream) => {
         userVideo.current.srcObject = stream;
-        socketRef.current.emit("join room", roomID);
+        socketRef.current.emit("join room", { roomID, roomName });
         socketRef.current.on("all users", (users) => {
           const peers = [];
           users.forEach((userID) => {
@@ -177,8 +179,8 @@ const Room = (props) => {
             console.log(e);
           }}
         />
-        <Canvas ref={canvasRef} />
-        <NameTag>{window.sessionStorage.name}</NameTag>
+        {/* <Canvas ref={canvasRef}/>
+                <NameTag>{window.sessionStorage.name}</NameTag>     */}
       </VideoWindow>
       {peers.map((peer, index) => {
         return <Video key={index} peer={peer} />;
@@ -209,10 +211,8 @@ const VideoWindow = styled.div`
 `;
 
 const StyledVideo = styled.video`
-  width: 300px;
-  height: 300px;
-  /* height: 50%;
-    width: 50%; */
+  height: 50%;
+  width: 50%;
 
   // position: "absolute",
   // marginLeft: "auto",
