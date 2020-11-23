@@ -29,8 +29,7 @@ io.on('connection', socket => {
     socket.on("join room", (obj) => {
         const roomID = obj['roomID'];
         const roomName = obj['roomName'];
-        // 중복되는 방제목 오면 예외처리 구현 예정
-        
+        // 중복되는 방제목 오면 예외처리 구현 예정        
         if (users[roomID]) {
             const length = users[roomID].length;
             if (length === 4) {
@@ -66,11 +65,12 @@ io.on('connection', socket => {
             users[roomID] = room;
 
         }
-        if (room.length < 1) {
-            const roomname_tmp = roomIDs.get(roomID); // roomName 검색
-            const rooms_tmp = rooms.filter(roomName => roomName !== roomname_tmp);
-            rooms = rooms_tmp;
-        }
+        // 사용자가 1명도 없는 방은 없애버리는 기능 구현해야함
+        // if (room.length < 1) { // 캠 켜지기전에 닫으면 서버가 죽는다 => 에러 고치기전에 사용 X
+        //     const roomname_tmp = roomIDs.get(roomID); // roomName 검색
+        //     const rooms_tmp = rooms.filter(roomName => roomName !== roomname_tmp); //방이름 같은 거 예외처리 해야함
+        //     rooms = rooms_tmp;
+        // }
     });
 
 });
