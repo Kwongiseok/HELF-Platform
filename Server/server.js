@@ -42,7 +42,7 @@ io.on('connection', socket => {
             roomGets.push(roomID);
             rooms.push(roomName);
             roomIDs.set(roomID,roomName);
-            console.log(roomGets);
+            console.log(roomGets,roomName);
         }
         socketToRoom[socket.id] = roomID;
         const usersInThisRoom = users[roomID].filter(id => id !== socket.id);
