@@ -29,7 +29,7 @@
     "styled-components": "^5.2.0"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-scripts start && node ../Server/server.js",
     "start:client": "react-scripts start",
     "start:server": "node ../Server/server.js",
     "build": "react-scripts build",
