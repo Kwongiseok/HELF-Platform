@@ -1,11 +1,19 @@
 import React, { useState, Component } from "react";
 import styled from "styled-components";
-import { Link } from 'react-router-dom';
+import { Link,useHistory } from 'react-router-dom';
+import { v1 as uuid } from "uuid";
 
 export default function RoomMakeScreen() {
   const [title, setTitle] = useState("");
   const [number, setNumber] = useState("헬스");
   const [type, setType] = useState("2");
+  const history = useHistory();
+
+  function create(title) {
+    const id = uuid();  
+    history.push(`/room/${id}`);
+    window.sessionStorage.setItem("title",title);
+  }
 
   // 제출된 방 정보 출력
   const handleSubmit = (e) => {
@@ -16,6 +24,7 @@ export default function RoomMakeScreen() {
   `);
     // window.sessionStorage.setItem("title",title);
     console.log(title);
+    create(title);
     e.preventDefault();
   };
 

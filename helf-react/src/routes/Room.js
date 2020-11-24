@@ -3,7 +3,7 @@ import io from "socket.io-client";
 import Peer from "simple-peer";
 import styled, { createGlobalStyle } from "styled-components";
 import { drawKeypoints, drawSkeleton } from "../utilities";
-
+import RoomMakeScreen from "../screens/RoomMakeScreen";
 /* tensorflow */
 import * as tf from "@tensorflow/tfjs";
 import * as posenet from "@tensorflow-models/posenet";
@@ -40,8 +40,7 @@ const Room = (props) => {
   const userVideo = useRef();
   const peersRef = useRef([]);
   const roomID = props.match.params.roomID;
-
-  const roomName = "방1";
+  const roomName = window.sessionStorage.title;
 
   const detect = async (net) => {
     if (
