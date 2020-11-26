@@ -3,7 +3,6 @@ import io from "socket.io-client";
 import Peer from "simple-peer";
 import styled, { createGlobalStyle } from "styled-components";
 import { drawKeypoints, drawSkeleton } from "../utilities";
-import RoomMakeScreen from "../screens/RoomMakeScreen";
 /* tensorflow */
 import * as tf from "@tensorflow/tfjs";
 import * as posenet from "@tensorflow-models/posenet";
@@ -15,25 +14,25 @@ const videoConstraints = {
   width: window.innerWidth / 2,
 };
 
+const Video = (props) => {
+  const webcamRef = useRef();
+  useEffect(() => {
+    props.peer.on("stream", (stream) => {
+      webcamRef.current.srcObject = stream;
+    });
+  }, []);
+
+  return (
+    <StyledVideo playsInline autoPlay ref={webcamRef} onClick={(e) => {}} />
+    // {/* //    <canvas ref = {canvasRef} />
+    // //    <NameTag>{window.sessionStorage.name}</NameTag> */}
+  );
+};
+
 const Room = (props) => {
   /* video */
-  const webcamRef = useRef();
   const canvasRef = useRef();
-  const Video = (props) => {
-    useEffect(() => {
-      props.peer.on("stream", (stream) => {
-        webcamRef.current.srcObject = stream;
-      });
-    }, []);
 
-    return (
-      //<div className = "Webcam">
-      <StyledVideo playsInline autoPlay ref={webcamRef} onClick={(e) => {}} />
-      //    <canvas ref = {canvasRef} />
-      //    <NameTag>{window.sessionStorage.name}</NameTag>
-      //</div>
-    );
-  };
   /* room */
   const [peers, setPeers] = useState([]);
   const socketRef = useRef();
@@ -117,15 +116,14 @@ const Room = (props) => {
           const item = peersRef.current.find((p) => p.peerID === payload.id);
           item.peer.signal(payload.signal);
         });
-        socketRef.current.on("user-disconnected", (payload) => {
-          const item = peersRef.current.find((p) => p.peerId === payload);
-          if (item) {
-            item.peer.destroy();
-            peersRef.current = peersRef.current.filter(
-              (p) => p.peerId !== payload
-            );
+        socketRef.current.on("user left", (id) => {
+          const peerObj = peersRef.current.find(p => p.peerID === id);
+          if(peerObj) {
+            peerObj.peer.destroy();
           }
-          setPeers((users) => users.filter((p) => p.peerId !== payload));
+          const peers = peersRef.current.filter(p => p.peerID !== id);
+          peersRef.current = peers;
+          setPeers(peers);
         });
       });
   }, []);
@@ -165,9 +163,8 @@ const Room = (props) => {
   }
 
   return (
+
     <Container>
-      <GlobalStyle />
-      <VideoWindow>
         <StyledVideo
           id='parent'
           muted
@@ -180,7 +177,7 @@ const Room = (props) => {
         />
         {/* <Canvas ref={canvasRef}/>
                 <NameTag>{window.sessionStorage.name}</NameTag>     */}
-      </VideoWindow>
+     
       {peers.map((peer, index) => {
         return <Video key={index} peer={peer} />;
       })}
@@ -194,14 +191,16 @@ const GlobalStyle = createGlobalStyle`
     }
 `;
 
+
 const Container = styled.div`
-  /* display: flex;
-    height: 100vh;
-    width: 90%;
-    margin: auto;
-    flex-wrap: wrap; */
+  padding : 10px;
   display: flex;
-  flex-wrap: wrap;
+  height: 100vh;
+  width: 100%;
+  margin: auto;
+  flex-wrap: wrap; 
+  background-color : black;
+  
 `;
 
 const VideoWindow = styled.div`
@@ -210,9 +209,8 @@ const VideoWindow = styled.div`
 `;
 
 const StyledVideo = styled.video`
-  height: 50%;
+  height: 40%;
   width: 50%;
-
   // position: "absolute",
   // marginLeft: "auto",
   // marginRight: "auto",
@@ -225,16 +223,20 @@ const StyledVideo = styled.video`
 `;
 
 const Canvas = styled.div`
-    position: "absolute",
-    margin-left: "auto",
-    margin-right: "auto",
-    left: 0,
-    right: 0,
-    text-align: "center",
-    zindex: 9,
-    width: 640,
-    height: 480,
-`;
+  height:40%;
+  width:50%;
+`
+// const Canvas = styled.div`
+//     position: "absolute",
+//     margin-left: "auto",
+//     margin-right: "auto",
+//     left: 0,
+//     right: 0,
+//     text-align: "center",
+//     zindex: 9,
+//     width: 640,
+//     height: 480,
+// `;
 
 const NameTag = styled.h1`
   text-align: center;

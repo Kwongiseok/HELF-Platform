@@ -137,7 +137,7 @@ class LoginScreen extends Component {
         {this.state.isLogin ? (
           // 로그인 전
           <StartContainer>
-            <StartButton Enter href='./video'>
+            <StartButton Enter href='./roomList'>
               시작하기
             </StartButton>
             <StartButton Make href='./roomMake'>

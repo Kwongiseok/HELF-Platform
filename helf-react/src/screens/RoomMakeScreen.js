@@ -22,7 +22,6 @@ export default function RoomMakeScreen() {
     Number: ${number}
     Type: ${type}
   `);
-    // window.sessionStorage.setItem("title",title);
     console.log(title);
     create(title);
     e.preventDefault();
