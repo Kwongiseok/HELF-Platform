@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import axios from "axios";
 import { render } from "react-dom";
 import { Redirect ,useHistory, Link} from "react-router-dom";
+import styled from "styled-components";
+import {HomeAlt} from '@styled-icons/boxicons-regular/HomeAlt';
+
 /* global history */
 /* global location */
 /* global window */
@@ -42,8 +45,54 @@ class RoomListScreen extends Component {
   // }
   render() {
     const { listItem,listAddress } = this.state;
-    const listRoom = listItem.map((name) =><Link to={`/room/${listAddress[listItem.indexOf(name)]}`}><button>{name}</button></Link>);
-    return <ul>{listRoom}</ul>;
+    const listRoom = listItem.map((name) =><Link to={`/room/${listAddress[listItem.indexOf(name)]}`}><Rooms>{name}</Rooms></Link>);
+    
+    return (
+      <Container>
+        <NavBar>
+          <HomeButton></HomeButton>
+          
+        </NavBar>
+        <RoomList>{listRoom}</RoomList>
+      </Container>
+    );
   }
 }
+
+const Container = styled.div`
+  width:100%;
+`;
+
+const NavBar = styled.div`
+  background-color: #ecf0f1;
+  width : 100%;
+  height : 48px;
+  margin : 0 auto;
+  margin-bottom: 24px;
+`;
+
+const HomeButton = styled(HomeAlt)`
+  width : 36px;
+  border : none;
+  outline : none;
+  margin : 4px;
+`;
+
+const Rooms = styled.button`
+  width : 1024px;
+  height : 48px;
+  border : none;
+  border-radius : 10px;
+  outline : none;
+  margin 10px 0;
+`;
+
+const RoomList = styled.div`
+  display : flex;
+  flex-direction:column;
+  align-items: center;
+  
+`;
+
+
 export default RoomListScreen;
