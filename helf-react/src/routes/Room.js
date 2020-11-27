@@ -1,11 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import io from "socket.io-client";
 import Peer from "simple-peer";
+import {Link} from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
 import { drawKeypoints, drawSkeleton } from "../utilities";
 /* tensorflow */
 import * as tf from "@tensorflow/tfjs";
 import * as posenet from "@tensorflow-models/posenet";
+
+import {Exit} from "@styled-icons/icomoon/Exit";
 
 const videoConstraints = {
   // height : 500,
@@ -24,8 +27,9 @@ const Video = (props) => {
 
   return (
     <StyledVideo muted playsInline autoPlay ref={webcamRef} onClick={() =>{
-      console.log("you Clicked");
+      console.log("user Clicked");
     }} />
+
     // {/* //    <canvas ref = {canvasRef} />
     // //    <NameTag>{window.sessionStorage.name}</NameTag> */}
   );
@@ -167,6 +171,7 @@ const Room = (props) => {
   return (
 
     <Container>
+        {/* <ExitBtn onClick={ () => { window.confirm("나가시겠습니까?") && <Link to ="/roomList"/>}}/> */}
         <StyledVideo
           id="parent"
           muted
@@ -196,6 +201,15 @@ const GlobalStyle = createGlobalStyle`
     }
 `;
 
+const ExitBtn = styled(Exit)` 
+  height : 48px;
+  width : 48px;
+  border : none;
+  outline : none;
+  margin : 4px;
+  cursor : pointer;
+  color : white;
+`;
 
 const Container = styled.div`
   display: flex;

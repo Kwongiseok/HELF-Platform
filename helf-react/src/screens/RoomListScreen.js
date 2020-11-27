@@ -4,6 +4,8 @@ import { render } from "react-dom";
 import { Redirect ,useHistory, Link} from "react-router-dom";
 import styled from "styled-components";
 import {HomeAlt} from '@styled-icons/boxicons-regular/HomeAlt';
+import {Plus} from "@styled-icons/boxicons-regular/Plus";
+import {Refresh} from "@styled-icons/material-sharp/Refresh"
 
 /* global history */
 /* global location */
@@ -50,9 +52,9 @@ class RoomListScreen extends Component {
     return (
       <Container>
         <NavBar>
-          <Link to="/">
-            <HomeButton/>
-          </Link>
+          <Link to="/"><HomeBtn/></Link>
+          <a href="/roomList"><RefreshBtn/></a>
+          <Link to="/roomMake"><MakeBtn/></Link>
         </NavBar>
         <RoomList>{listRoom}</RoomList>
       </Container>
@@ -65,13 +67,34 @@ const Container = styled.div`
 `;
 
 const NavBar = styled.div`
-  background-color: #ecf0f1;
+  display : flex;
+  align-items : center;
+  justify-content : space-around;
   width : 100%;
   height : 48px;
   margin : 0 auto 24px;
+  background-color: #ecf0f1;
 `;
 
-const HomeButton = styled(HomeAlt)`
+const HomeBtn = styled(HomeAlt)`
+  width : 48px;
+  border : none;
+  outline : none;
+  margin : 4px;
+  cursor : pointer;
+  color : black;
+`;
+
+const MakeBtn = styled(Plus)`
+  width : 48px;
+  border : none;
+  outline : none;
+  margin : 4px;
+  cursor : pointer;
+  color : black;
+`;
+
+const RefreshBtn = styled(Refresh)`
   width : 48px;
   border : none;
   outline : none;
