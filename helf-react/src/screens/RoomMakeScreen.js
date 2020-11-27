@@ -22,7 +22,6 @@ export default function RoomMakeScreen() {
     Number: ${number}
     Type: ${type}
   `);
-    // window.sessionStorage.setItem("title",title);
     console.log(title);
     create(title);
     e.preventDefault();
@@ -34,7 +33,7 @@ export default function RoomMakeScreen() {
         <h1 style={{textAlign:'center'}}>방 만들기</h1>
         <TitleLabel>
           <div style ={{fontSize : '18px',fontWeight:'bold' }}>제목</div>      
-          <input style={{width:'295px', height:'28px', borderRadius : '10px', border:'0', outline:'0'}}
+          <input style={{width:'295px', height:'28px', borderRadius : '10px', border:'0', outline:'0', paddingLeft : '8px'}}
             name='title'
             type='title'
             value={title}
