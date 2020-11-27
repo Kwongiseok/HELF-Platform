@@ -22,7 +22,7 @@ class LoginScreen extends Component {
       id: "",
       name: "",
       email: "",
-      provider: "",
+      provider: "", 
       isLogin: false,
     };
   }

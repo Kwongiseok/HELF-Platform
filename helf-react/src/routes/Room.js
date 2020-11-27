@@ -9,8 +9,8 @@ import * as tf from "@tensorflow/tfjs";
 import * as posenet from "@tensorflow-models/posenet";
 
 const videoConstraints = {
-  // height : 300,
-  // width : 300
+  // height : 500,
+  // width : 500,
   height: window.innerHeight / 2,
   width: window.innerWidth / 2,
 };
@@ -86,7 +86,7 @@ const Room = (props) => {
     socketRef.current = io.connect("http://localhost:5000/");
 
     navigator.mediaDevices
-      .getUserMedia({ video: videoConstraints, audio: true })
+      .getUserMedia({ video: videoConstraints, audio: false })
       .then((stream) => {
         userVideo.current.srcObject = stream;
         socketRef.current.emit("join room", { roomID, roomName });
@@ -210,9 +210,10 @@ const VideoWindow = styled.div`
 `;
 
 const StyledVideo = styled.video`
-  height: 50%;
-  width: 50%;
-
+  height: 80%;
+  width: 80%;
+  margin : 0;
+  padding : 0;
   // position: "absolute",
   // marginLeft: "auto",
   // marginRight: "auto",

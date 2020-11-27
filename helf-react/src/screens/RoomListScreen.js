@@ -50,8 +50,9 @@ class RoomListScreen extends Component {
     return (
       <Container>
         <NavBar>
-          <HomeButton></HomeButton>
-          
+          <Link to="/">
+            <HomeButton/>
+          </Link>
         </NavBar>
         <RoomList>{listRoom}</RoomList>
       </Container>
@@ -67,15 +68,16 @@ const NavBar = styled.div`
   background-color: #ecf0f1;
   width : 100%;
   height : 48px;
-  margin : 0 auto;
-  margin-bottom: 24px;
+  margin : 0 auto 24px;
 `;
 
 const HomeButton = styled(HomeAlt)`
-  width : 36px;
+  width : 48px;
   border : none;
   outline : none;
   margin : 4px;
+  cursor : pointer;
+  color : black;
 `;
 
 const Rooms = styled.button`
@@ -84,14 +86,23 @@ const Rooms = styled.button`
   border : none;
   border-radius : 10px;
   outline : none;
-  margin 10px 0;
+  margin : 10px 0;
+  padding : 0;
+  cursor:pointer;
+
+  transition: all 0.2s;
+  -webkit-transition: all 0.2s;
+  -moz-transition: all 0.2s;
+  -o-transition: all 0.2s;
+  &:hover {
+    background-color : #bdc3c7;
+  }
 `;
 
 const RoomList = styled.div`
   display : flex;
   flex-direction:column;
   align-items: center;
-  
 `;
 
 
