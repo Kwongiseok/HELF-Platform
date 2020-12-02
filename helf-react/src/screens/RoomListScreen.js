@@ -37,12 +37,7 @@ class RoomListScreen extends Component {
     componentDidMount() {
         this.loadList();
     }
-  // redirectToRoom = (name) => {
-  //   let history = useHistory();
-  //   const {listItem , listAddress} = this.state;
-  //   const url = listAddress[listItem.indexOf(name)]
-  //   history.push('/room/${url}');
-  // }
+    
   render() {
     const { listItem,listAddress } = this.state;
     const listRoom = listItem.map((name) =><Link to={`/room/${listAddress[listItem.indexOf(name)]}`}><Rooms>{name}</Rooms></Link>);

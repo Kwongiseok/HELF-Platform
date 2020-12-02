@@ -5,15 +5,18 @@ import NaverLogin from "react-login-by-naver";
 import KakaoLogin from "react-kakao-login";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 import styled from "styled-components";
-import { Redirect, withRouter } from "react-router-dom";
+import { Redirect, withRouter,useHistory } from "react-router-dom";
 import LogoBox from "../Components/LogoBox";
 import axios from "axios";
+import { v1 as uuid } from "uuid";
+
 //Login Cient IDs
 const googleID =
   "170179425708-lu3v7mptq4jn95giek3kbv845eov647l.apps.googleusercontent.com";
 const naverID = "oHvHR1J4ah36qMMt19YX";
 const kakaoID = "d1ff7d6c9ce92ba437a95f277ad4a992";
 const facebookID = "567205533996340";
+
 
 class LoginScreen extends Component {
   constructor(props) {
@@ -25,7 +28,9 @@ class LoginScreen extends Component {
       provider: "",
       isLogin: false,
     };
+
   }
+
 
   //Google Login Success
   responseGoogle = (res) => {
@@ -42,19 +47,6 @@ class LoginScreen extends Component {
     let email_post = this.state.email;
     console.log(name_post);
     client.post("/api", { name_post, email_post });
-    // axios.request({
-    //   method : "POST",
-    //   url : "http://localhost:5000/api/",
-    //   data : {
-    //     "name" : this.state.name,
-    //     "email" : this.state.email
-    //   }
-    // }).then((res)=> {
-    //   console.log(res)
-    // }).catch(error => {
-    //   console.log(error);
-    //   throw new Error(error);
-    // })
   };
 
   //Google Login Fail
@@ -125,6 +117,7 @@ class LoginScreen extends Component {
   };
 
   render() {
+
     return (
       <Container>
         <LogoContainer>
@@ -143,6 +136,9 @@ class LoginScreen extends Component {
             <StartButton Make href='./roomMake'>
               방만들기
             </StartButton>
+            <StartButton Make href={`/soloRoom/${uuid()}`}>
+              혼자 운동하기
+            </StartButton> 
           </StartContainer>
         ) : (
           // 로그인 후
