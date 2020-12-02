@@ -134,7 +134,7 @@ class LoginScreen extends Component {
         {/* 시작하기 -> RoomListScreen 
           방만들기 -> RoomMakeScreen 으로 수정해야함*/}
 
-        {this.state.isLogin ? (
+        {window.sessionStorage.isLogin ? (
           // 로그인 전
           <StartContainer>
             <StartButton Enter href='./roomList'>

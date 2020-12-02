@@ -1,19 +1,23 @@
 import React, { useEffect, useRef, useState } from "react";
+// import { Nav, Navbar, NavItem } from 'react-bootstrap'
 import io from "socket.io-client";
 import Peer from "simple-peer";
 import {Link} from "react-router-dom";
 import styled, { createGlobalStyle } from "styled-components";
 import { drawKeypoints, drawSkeleton } from "../utilities";
+import {HomeAlt} from '@styled-icons/boxicons-regular/HomeAlt';
+import {Exit} from '@styled-icons/boxicons-regular/Exit';
+
+import {useHistory } from 'react-router-dom';
+
 /* tensorflow */
 import * as tf from "@tensorflow/tfjs";
 import * as posenet from "@tensorflow-models/posenet";
 
-import {Exit} from "@styled-icons/icomoon/Exit";
 
 const videoConstraints = {
-  // height : 500,
-  // width : 500,
-  height: window.innerHeight / 2,
+  frameRate : {max : 30},
+  height: window.innerHeight / 2.1,
   width: window.innerWidth / 2,
 };
 
@@ -26,10 +30,14 @@ const Video = (props) => {
   }, []);
 
   return (
-    <StyledVideo muted playsInline autoPlay ref={webcamRef} onClick={() =>{
-      console.log("user Clicked");
-    }} />
-
+    <div id="member video" style={{height : window.innerHeight/2.1,
+      textAlign:'center',
+      width: window.innerWidth/2}}>
+      <StyledVideo id = "member" playsInline autoPlay ref={webcamRef} onClick={(e) => {}} />
+      {/* <canvas ref={canvasRef} style={{width:window.innerWidth/2, height:window.innerHeight/2.1,
+          position:"absolute", left :0,top:0,
+          }}/> member의 pose 인식할 수도 있음*/} 
+    </div>
     // {/* //    <canvas ref = {canvasRef} />
     // //    <NameTag>{window.sessionStorage.name}</NameTag> */}
   );
@@ -38,7 +46,6 @@ const Video = (props) => {
 const Room = (props) => {
   /* video */
   const canvasRef = useRef();
-
   /* room */
   const [peers, setPeers] = useState([]);
   const socketRef = useRef();
@@ -46,6 +53,8 @@ const Room = (props) => {
   const peersRef = useRef([]);
   const roomID = props.match.params.roomID;
   const roomName = window.sessionStorage.title;
+
+  const history = useHistory();
 
   const detect = async (net) => {
     if (
@@ -65,7 +74,7 @@ const Room = (props) => {
       const pose = await net.estimateSinglePose(video);
       console.log(pose);
 
-      // drawCanvas(pose, video, videoWidth, videoHeight, canvasRef);
+      drawCanvas(pose, video, videoWidth, videoHeight, canvasRef);
     }
   };
   const drawCanvas = (pose, video, videoWidth, videoHeight, canvas) => {
@@ -75,17 +84,20 @@ const Room = (props) => {
 
     drawKeypoints(pose["keypoints"], 0.6, ctx);
     drawSkeleton(pose["keypoints"], 0.7, ctx);
+
   };
   const runPosenet = async () => {
     const net = await posenet.load({
-      inputResolution: { width: 300, height: 300 },
+      inputResolution: { width: window.innerWidth/2, height: window.innerHeight/2.1 },
       scale: 0.5,
     });
     setInterval(() => {
       detect(net);
     }, 100);
   };
-  // runPosenet();
+
+  // if(userVideo) {runPosenet();}
+  
   useEffect(() => {
     // socketRef.current = io.connect("https://helf-node.herokuapp.com/");
     socketRef.current = io.connect("http://localhost:5000/");
@@ -93,6 +105,7 @@ const Room = (props) => {
     navigator.mediaDevices
       .getUserMedia({ video: videoConstraints, audio: true })
       .then((stream) => {
+        if(userVideo.current != null){
         userVideo.current.srcObject = stream;
         socketRef.current.emit("join room", { roomID, roomName });
         socketRef.current.on("all users", (users) => {
@@ -131,7 +144,8 @@ const Room = (props) => {
           peersRef.current = peers;
           setPeers(peers);
         });
-      });
+      }
+     });
   }, []);
 
   function createPeer(userToSignal, callerID, stream) {
@@ -169,22 +183,30 @@ const Room = (props) => {
   }
 
   return (
-
     <Container>
-        {/* <ExitBtn onClick={ () => { window.confirm("나가시겠습니까?") && <Link to ="/roomList"/>}}/> */}
+      <NavBar>
+        <HomeButton onClick={()=> {history.push("/");}}/>
+        {/* <heart></heart>
+        <heartRate></heartRate>
+        <profile></profile> navbar에 추가할 심박수, 프로필*/}
+        <span>{window.sessionStorage.name}</span>
+      </NavBar>
+      <div style={{height:window.innerHeight/2.1, textAlign:'center',
+                   position : "relative",
+                   width: window.innerWidth/2}} id = 'host video'>
         <StyledVideo
           id="parent"
           muted
           ref={userVideo}
           autoPlay
           playsInline
-          onClick={() =>{
-            console.log("me Clicked");
-          }}
-        />
-        {/* <Canvas ref={canvasRef}/>
-                <NameTag>{window.sessionStorage.name}</NameTag>     */}
-     
+          onClick={(e) => {
+            console.log(e);
+          }}/>
+          <canvas ref={canvasRef} style={{width:window.innerWidth/2, height:window.innerHeight/2.1,
+          position:"absolute", left :0,top:0,
+          }}/>
+      </div>
       {peers.map((peer, index) => {
         return <Video key={index} peer={peer} />;
       })}
@@ -217,43 +239,39 @@ const Container = styled.div`
   width: 100%;
   margin: auto;
   flex-wrap: wrap; 
-  background-color : black;
+  background-color : #1C1C1C;
 `;
 
-const VideoWindow = styled.div`
-  display: flex;
-  flex-direction: column;
+const NavBar = styled.header`
+  background-color: #ecf0f1;
+  width : 100%;
+  height : 26px;  
+  margin : 0 auto;
 `;
-
+const HomeButton = styled(HomeAlt)`
+  width : 24px;
+  border : none;
+  outline : none;
+  margin : 2px;
+  height : 24px;
+  cursor : pointer;
+`;
 const StyledVideo = styled.video`
-  height: 40%;
-  width: 50%;
+  height: ${window.innerHeight/2.1};
+  width: ${window.innerWidth/2};
+  position:"absolute";
+  // zindex: 9,
   // position: "absolute",
-  // marginLeft: "auto",
-  // marginRight: "auto",
-  // left: 0,
-  // right: 0,
+  margin-left: "auto";
+  margin-right: "auto";
+  left: 0;
+  top: 0;
   // textAlign: "center",
   // zindex: 9,
   // width: 640,
   // height: 480,
 `;
 
-const Canvas = styled.div`
-  height:40%;
-  width:50%;
-`
-// const Canvas = styled.div`
-//     position: "absolute",
-//     margin-left: "auto",
-//     margin-right: "auto",
-//     left: 0,
-//     right: 0,
-//     text-align: "center",
-//     zindex: 9,
-//     width: 640,
-//     height: 480,
-// `;
 
 const NameTag = styled.h1`
   text-align: center;
