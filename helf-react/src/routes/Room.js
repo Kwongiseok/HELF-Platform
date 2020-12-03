@@ -13,7 +13,7 @@ import * as posenet from "@tensorflow-models/posenet";
 
 
 const videoConstraints = {
-  frameRate : {max : 30},
+  // frameRate : {max : 30},
   height: window.innerHeight / 2.1,
   width: window.innerWidth / 2,
 };
@@ -70,22 +70,25 @@ const Room = (props) => {
       // Make Detection
       const pose = await net.estimateSinglePose(video);
       console.log(pose);
-
       drawCanvas(pose, video, videoWidth, videoHeight, canvasRef);
     }
   };
   const drawCanvas = (pose, video, videoWidth, videoHeight, canvas) => {
+    if(canvas.current) {
     const ctx = canvas.current.getContext("2d");
+    
     canvas.current.width = videoWidth;
     canvas.current.height = videoHeight;
 
     drawKeypoints(pose["keypoints"], 0.6, ctx);
     drawSkeleton(pose["keypoints"], 0.7, ctx);
-
+    }
   };
   const runPosenet = async () => {
+    let tmp_width = window.innerWidth/2;
+    let tmp_height = window.innerHeight/2.1;
     const net = await posenet.load({
-      inputResolution: { width: window.innerWidth/2, height: window.innerHeight/2.1 },
+      inputResolution: { width: tmp_width, height: tmp_height },
       scale: 0.5,
     });
     setInterval(() => {
@@ -93,14 +96,14 @@ const Room = (props) => {
     }, 100);
   };
 
-  // if(userVideo) {runPosenet();}
+  if(userVideo) {runPosenet();}
   
   useEffect(() => {
-    // socketRef.current = io.connect("https://helf-node.herokuapp.com/");
-    socketRef.current = io.connect("http://localhost:5000/");
+    socketRef.current = io.connect("https://helf-node.herokuapp.com/");
+    // socketRef.current = io.connect("http://localhost:5000/");
 
     navigator.mediaDevices
-      .getUserMedia({ video: videoConstraints, audio: true })
+      .getUserMedia({ video: videoConstraints, audio: false })
       .then((stream) => {
         if(userVideo.current != null){
         userVideo.current.srcObject = stream;
@@ -188,7 +191,7 @@ const Room = (props) => {
         <profile></profile> navbar에 추가할 심박수, 프로필*/}
         <span>{window.sessionStorage.name}</span>
       </NavBar>
-      <div style={{height:window.innerHeight/2.1, textAlign:'center',
+      <div style={{height:window.innerHeight/2.1,textAlign:'center',
                    position : "relative",
                    width: window.innerWidth/2}} id = 'host video'>
         <StyledVideo
@@ -200,7 +203,7 @@ const Room = (props) => {
           onClick={(e) => {
             console.log(e);
           }}/>
-          <canvas ref={canvasRef} style={{width:window.innerWidth/2, height:window.innerHeight/2.1,
+          <canvas ref={canvasRef} style={{width:window.innerWidth/2, height:window.innerHeight/2.1, textAlign: "center",
           position:"absolute", left :0,top:0,
           }}/>
       </div>
@@ -245,10 +248,10 @@ const StyledVideo = styled.video`
   height: ${window.innerHeight/2.1};
   width: ${window.innerWidth/2};
   position:"absolute",
-  marginLeft: "auto",
-  marginRight: "auto",
   left: 0,
   top: 0,
+  textAlign: "center",
+
 `;
 
 

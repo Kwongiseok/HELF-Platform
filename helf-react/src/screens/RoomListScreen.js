@@ -45,7 +45,7 @@ class RoomListScreen extends Component {
     return (
       <Container>
         <NavBar>
-          <HomeButton></HomeButton>
+          <HomeButton onClick={()=> {this.props.history.push("/");}}></HomeButton>
           
         </NavBar>
         <RoomList>{listRoom}</RoomList>

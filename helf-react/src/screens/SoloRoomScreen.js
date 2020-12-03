@@ -12,10 +12,6 @@ import { v1 as uuid } from "uuid";
 // class SoloRoomScreen extends Component {
 
 const SoloRoomScreen = () => {
-  function create(title) {
-    const id = uuid();  
-    history.push(`/soloRoom/${id}`);
-  }
 
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
@@ -68,7 +64,7 @@ const SoloRoomScreen = () => {
     drawSkeleton(pose["keypoints"], 0.7, ctx);
   };
 
-  // runPosenet();
+  runPosenet();
 
   return (
     <Container >
@@ -88,7 +84,7 @@ const SoloRoomScreen = () => {
             zindex='9px'
             width= {tmp_width}
             height= {tmp_height}
-            playing 
+            // playing 
             controls/>        
         </div>
 
