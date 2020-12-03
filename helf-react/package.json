@@ -35,7 +35,7 @@
     "styled-icons": "^10.22.0"
   },
   "scripts": {
-    "start": "react-scripts start && node ../Server/server.js",
+    "start": "react-scripts start",
     "start:client": "react-scripts start",
     "start:server": "node ../Server/server.js",
     "build": "react-scripts build",
