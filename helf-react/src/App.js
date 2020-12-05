@@ -8,14 +8,9 @@ import { BrowserRouter, Route, Link, Switch } from "react-router-dom";
 import CreateRoom from "./routes/CreateRoom";
 import Room from "./routes/Room";
 import withLogin from "./Components/LoginHOC"; // 로그인 했을 때만 보여짐
-import roomListScreen from "./screens/RoomListScreen";
-import roomMakeScreen from "./screens/RoomMakeScreen";
-// function App() {
-//   return (
-//     <LoginScreen/>
-//   );
-// }
-
+import RoomListScreen from "./screens/RoomListScreen";
+import RoomMakeScreen from "./screens/RoomMakeScreen";
+import SoloRoomScreen from "./screens/SoloRoomScreen";
 class App extends Component {
   constructor(props) {
     super(props);
@@ -63,8 +58,9 @@ class App extends Component {
             <Route path='/video' component={CreateRoom} />
             <Route path='/room/:roomID' component={Room} />
             <Route path='/home' component={HomeScreen} />
-            <Route path='/roomList' component={roomListScreen} />
-            <Route path='/roomMake' component={roomMakeScreen} />
+            <Route path='/roomList' component={RoomListScreen} />
+            <Route path='/roomMake' component={RoomMakeScreen} />
+            <Route path='/soloRoom/:roomID' component={SoloRoomScreen} />
           </Switch>
         </BrowserRouter>
       </Store.Provider>

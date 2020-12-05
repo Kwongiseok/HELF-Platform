@@ -259,17 +259,11 @@ const HomeButton = styled(HomeAlt)`
 const StyledVideo = styled.video`
   height: ${window.innerHeight/2.1};
   width: ${window.innerWidth/2};
-  position:"absolute";
-  // zindex: 9,
-  // position: "absolute",
-  margin-left: "auto";
-  margin-right: "auto";
-  left: 0;
-  top: 0;
-  // textAlign: "center",
-  // zindex: 9,
-  // width: 640,
-  // height: 480,
+  position:"absolute",
+  marginLeft: "auto",
+  marginRight: "auto",
+  left: 0,
+  top: 0,
 `;
 
 
