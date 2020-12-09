@@ -139,7 +139,7 @@ const Room = (props) => {
           }}/>
       </div>
       {peers.map((peer, index) => {
-        return <Video key={index} peer={peer} />;
+        if(peer) return <Video key={index} peer={peer} />;
       })}
     </Container>
   );
