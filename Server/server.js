@@ -67,8 +67,7 @@ io.on('connection', socket => {
 
         }
         socket.broadcast.emit('user left',socket.id);
-        // 사용자가 1명도 없는 방은 없애버리는 기능 구현해야함
-        if (room && room.length < 1) { // 캠 켜지기전에 닫으면 서버가 죽는다 => 에러 고치기전에 사용 X
+        if (room && room.length < 1) {
             const roomname_tmp = roomIDs.get(roomID); // roomName 검색
             const roomGetsDelAddr = roomGets[rooms.indexOf(roomname_tmp)]; // roomGets 주소를 찾아서 삭제하기 위함
             const rooms_tmp = rooms.filter(roomName => roomName !== roomname_tmp); //방이름 같은 거 예외처리 해야함

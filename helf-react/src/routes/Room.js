@@ -2,21 +2,13 @@ import React, { useEffect, useRef, useState } from "react";
 // import { Nav, Navbar, NavItem } from 'react-bootstrap'
 import io from "socket.io-client";
 import Peer from "simple-peer";
-import {Link} from "react-router-dom";
-import styled, { createGlobalStyle } from "styled-components";
-import { drawKeypoints, drawSkeleton } from "../utilities";
+import styled from "styled-components";
 import {HomeAlt} from '@styled-icons/boxicons-regular/HomeAlt';
-import {Exit} from '@styled-icons/boxicons-regular/Exit';
 
 import {useHistory } from 'react-router-dom';
 
-/* tensorflow */
-import * as tf from "@tensorflow/tfjs";
-import * as posenet from "@tensorflow-models/posenet";
-
-
 const videoConstraints = {
-  frameRate : {max : 30},
+  // frameRate : {max : 30},
   height: window.innerHeight / 2.1,
   width: window.innerWidth / 2,
 };
@@ -34,18 +26,11 @@ const Video = (props) => {
       textAlign:'center',
       width: window.innerWidth/2}}>
       <StyledVideo id = "member" playsInline autoPlay ref={webcamRef} onClick={(e) => {}} />
-      {/* <canvas ref={canvasRef} style={{width:window.innerWidth/2, height:window.innerHeight/2.1,
-          position:"absolute", left :0,top:0,
-          }}/> member의 pose 인식할 수도 있음*/} 
     </div>
-    // {/* //    <canvas ref = {canvasRef} />
-    // //    <NameTag>{window.sessionStorage.name}</NameTag> */}
   );
 };
 
 const Room = (props) => {
-  /* video */
-  const canvasRef = useRef();
   /* room */
   const [peers, setPeers] = useState([]);
   const socketRef = useRef();
@@ -53,54 +38,11 @@ const Room = (props) => {
   const peersRef = useRef([]);
   const roomID = props.match.params.roomID;
   const roomName = window.sessionStorage.title;
-
   const history = useHistory();
 
-  const detect = async (net) => {
-    if (
-      typeof userVideo !== "undefined" &&
-      typeof userVideo.current !== "undefined" &&
-      userVideo.current !== null &&
-      userVideo.current.readyState === 4
-    ) {
-      const video = userVideo.current;
-      const videoWidth = userVideo.current.videoWidth;
-      const videoHeight = userVideo.current.videoHeight;
-      // Set video width
-      userVideo.current.width = videoWidth;
-      userVideo.current.height = videoHeight;
-
-      // Make Detection
-      const pose = await net.estimateSinglePose(video);
-      console.log(pose);
-
-      drawCanvas(pose, video, videoWidth, videoHeight, canvasRef);
-    }
-  };
-  const drawCanvas = (pose, video, videoWidth, videoHeight, canvas) => {
-    const ctx = canvas.current.getContext("2d");
-    canvas.current.width = videoWidth;
-    canvas.current.height = videoHeight;
-
-    drawKeypoints(pose["keypoints"], 0.6, ctx);
-    drawSkeleton(pose["keypoints"], 0.7, ctx);
-
-  };
-  const runPosenet = async () => {
-    const net = await posenet.load({
-      inputResolution: { width: window.innerWidth/2, height: window.innerHeight/2.1 },
-      scale: 0.5,
-    });
-    setInterval(() => {
-      detect(net);
-    }, 100);
-  };
-
-  // if(userVideo) {runPosenet();}
-  
   useEffect(() => {
-    // socketRef.current = io.connect("https://helf-node.herokuapp.com/");
-    socketRef.current = io.connect("http://localhost:5000/");
+    socketRef.current = io.connect("https://helf-node.herokuapp.com/");
+    // socketRef.current = io.connect("http://localhost:5000/");
 
     navigator.mediaDevices
       .getUserMedia({ video: videoConstraints, audio: true })
@@ -186,53 +128,24 @@ const Room = (props) => {
     <Container>
       <NavBar>
         <HomeButton onClick={()=> {history.push("/");}}/>
-        {/* <heart></heart>
-        <heartRate></heartRate>
-        <profile></profile> navbar에 추가할 심박수, 프로필*/}
-        <span>{window.sessionStorage.name}</span>
+        <Title>{window.sessionStorage.title}</Title>
       </NavBar>
-      <div style={{height:window.innerHeight/2.1, textAlign:'center',
+
+      <div style={{height:window.innerHeight/2.1,textAlign:'center',
                    position : "relative",
                    width: window.innerWidth/2}} id = 'host video'>
-        <StyledVideo
-          id="parent"
-          muted
-          ref={userVideo}
-          autoPlay
-          playsInline
-          onClick={(e) => {
+        <StyledVideo id="parent" ref={userVideo} autoPlay playsInline onClick={(e) => {
             console.log(e);
-          }}/>
-          <canvas ref={canvasRef} style={{width:window.innerWidth/2, height:window.innerHeight/2.1,
-          position:"absolute", left :0,top:0,
           }}/>
       </div>
       {peers.map((peer, index) => {
         return <Video key={index} peer={peer} />;
       })}
-
-      {/* { console.log(peers)} */}
-
     </Container>
   );
 };
 
-const GlobalStyle = createGlobalStyle`
-    body {
-        background-color : black;
-    }
-`;
-
-const ExitBtn = styled(Exit)` 
-  height : 48px;
-  width : 48px;
-  border : none;
-  outline : none;
-  margin : 4px;
-  cursor : pointer;
-  color : white;
-`;
-
+// Style Section
 const Container = styled.div`
   display: flex;
   height: 100vh;
@@ -256,21 +169,14 @@ const HomeButton = styled(HomeAlt)`
   height : 24px;
   cursor : pointer;
 `;
+
+const Title = styled.span`
+`;
+
 const StyledVideo = styled.video`
   height: ${window.innerHeight/2.1};
   width: ${window.innerWidth/2};
-  position:"absolute",
-  marginLeft: "auto",
-  marginRight: "auto",
-  left: 0,
-  top: 0,
-`;
-
-
-const NameTag = styled.h1`
-  text-align: center;
-  color: white;
-  font-size: 20px;
+  position:"absolute";
 `;
 
 export default Room;

@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import "./CSS/App.css";
-import HomeScreen from "./screens/HomeScreen";
 import LoginScreen from "./screens/LoginScreen";
-import VideoScreen from "./screens/VideoScreen";
 import Store from "./Store/store";
 import { BrowserRouter, Route, Link, Switch } from "react-router-dom";
 import CreateRoom from "./routes/CreateRoom";
@@ -57,7 +55,6 @@ class App extends Component {
             <Route exact path='/' component={LoginScreen} />
             <Route path='/video' component={CreateRoom} />
             <Route path='/room/:roomID' component={Room} />
-            <Route path='/home' component={HomeScreen} />
             <Route path='/roomList' component={RoomListScreen} />
             <Route path='/roomMake' component={RoomMakeScreen} />
             <Route path='/soloRoom/:roomID' component={SoloRoomScreen} />

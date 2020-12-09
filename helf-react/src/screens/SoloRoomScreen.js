@@ -12,10 +12,6 @@ import { v1 as uuid } from "uuid";
 // class SoloRoomScreen extends Component {
 
 const SoloRoomScreen = () => {
-  function create(title) {
-    const id = uuid();  
-    history.push(`/soloRoom/${id}`);
-  }
 
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
@@ -60,12 +56,14 @@ const SoloRoomScreen = () => {
   };
 
   const drawCanvas = (pose, video, videoWidth, videoHeight, canvas) => {
+    if(canvas.current) {
     const ctx = canvas.current.getContext("2d");
     canvas.current.width = videoWidth;
     canvas.current.height = videoHeight;
 
     drawKeypoints(pose["keypoints"], 0.6, ctx);
     drawSkeleton(pose["keypoints"], 0.7, ctx);
+    }
   };
 
   // runPosenet();
@@ -75,20 +73,20 @@ const SoloRoomScreen = () => {
         <NavBar><HomeButton onClick={()=> {history.push("/");}}/></NavBar>
         <Menubar>
           <input value = {Url} onChange={(e) => setUrl(e.target.value)}/>
-          <button onClick={{}}>스쿼트</button>
+          <button onClick={{}}>검색</button>
         </Menubar>
         
         <div style={{height:window.innerHeight-100, textAlign:'center',
                    position : "relative",
                    width: window.innerWidth/2.1}} id = 'Youtube video'>
-        <ReactPlayer url= 'https://www.youtube.com/watch?v=jj6ze_eqmYI'
+        <ReactPlayer url= 'https://www.youtube.com/watch?v=CYcLODSeC-c'
             padding='10px'
             position="absolute"
             left='0'
             zindex='9px'
             width= {tmp_width}
             height= {tmp_height}
-            playing 
+            // playing 
             controls/>        
         </div>
 

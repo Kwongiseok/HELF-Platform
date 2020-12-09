@@ -124,21 +124,12 @@ class LoginScreen extends Component {
           <LogoBox />
         </LogoContainer>
 
-        {/* 시작하기 -> RoomListScreen 
-          방만들기 -> RoomMakeScreen 으로 수정해야함*/}
-
         {window.sessionStorage.isLogin ? (
           // 로그인 전
           <StartContainer>
-            <StartButton Enter href='./roomList'>
-              시작하기
-            </StartButton>
-            <StartButton Make href='./roomMake'>
-              방만들기
-            </StartButton>
-            <StartButton Make href={`/soloRoom/${uuid()}`}>
-              혼자 운동하기
-            </StartButton> 
+            <StartButton Enter href='./roomList'>시작하기</StartButton>
+            <StartButton Solo href={`/soloRoom/${uuid()}`}>혼자 운동하기</StartButton> 
+            <StartButton Make href='./roomMake'>방만들기</StartButton>
           </StartContainer>
         ) : (
           // 로그인 후
@@ -274,7 +265,12 @@ const StartButton = styled.a`
   width: 300px;
   font-size: 24px;
   text-align: center;
-  background-color: ${(props) => (props.Enter ? "#3498db" : "#bdc3c7")};
+  background: ${(props) => {
+    if (props.Enter) return "#3498db";
+    else if (props.Solo) return  "#2ecc71";
+    else if(props.Make) return "#c9cfd1";
+    }};
+
   border-radius: 10px;
   padding: 10px;
   margin-bottom: 12px;
@@ -288,18 +284,15 @@ const StartButton = styled.a`
   -o-transition: all 0.2s;
 
   &:hover {
-    background-color: ${(props) => (props.Enter ? "#2980b9" : "#7f8c8d")};
+    background: ${(props) => {
+    if (props.Enter) return "#2980b9";
+    else if (props.Solo) return "#27ae60";
+    else if(props.Make) return "#7f8c8d";
+    }};
   }
 `;
 
 const Container = styled.div`
-  /* position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: #d9afd9;
-  background-image: linear-gradient(0deg, #d9afd9 0%, #97d9e1 100%); */
 `;
 
 export default withRouter(LoginScreen);
