@@ -16,9 +16,11 @@ const videoConstraints = {
 const Video = (props) => {
   const webcamRef = useRef();
   useEffect(() => {
+    if (props){
     props.peer.on("stream", (stream) => {
       webcamRef.current.srcObject = stream;
-    });
+    
+    });}
   }, []);
 
   return (
