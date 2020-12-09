@@ -134,7 +134,7 @@ const Room = (props) => {
       <div style={{height:window.innerHeight/2.1,textAlign:'center',
                    position : "relative",
                    width: window.innerWidth/2}} id = 'host video'>
-        <StyledVideo id="parent" ref={userVideo} autoPlay playsInline onClick={(e) => {
+        <StyledVideo id="parent" muted ref={userVideo} autoPlay playsInline onClick={(e) => {
             console.log(e);
           }}/>
       </div>

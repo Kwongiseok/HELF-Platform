@@ -127,8 +127,8 @@ class LoginScreen extends Component {
         {window.sessionStorage.isLogin ? (
           // 로그인 전
           <StartContainer>
-            <StartButton Enter href='./roomList'>시작하기</StartButton>
-            <StartButton Solo href={`/soloRoom/${uuid()}`}>혼자 운동하기</StartButton> 
+            <StartButton Enter href='./roomList'>같이하기</StartButton>
+            <StartButton Solo href={`/soloRoom/${uuid()}`}>혼자하기</StartButton> 
             <StartButton Make href='./roomMake'>방만들기</StartButton>
           </StartContainer>
         ) : (

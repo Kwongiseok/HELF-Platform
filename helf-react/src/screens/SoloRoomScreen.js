@@ -66,7 +66,7 @@ const SoloRoomScreen = () => {
     }
   };
 
-  // runPosenet();
+  runPosenet(); // Motion 인식
 
   return (
     <Container >
